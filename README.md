@@ -45,7 +45,7 @@ Bạn không cần cài đặt Node.js hay Database server. Chỉ cần:
 
 1.  **Clone repository này về máy:**
     ```bash
-    git clone https://github.com/quangphuc29306-cpu/cafe-shop.git
+    git clone https://github.com/ngoquangphuc29306/cafe-shop.git
     ```
 2.  **Mở thư mục dự án.**
 3.  **Chạy file `index.html`** trực tiếp bằng trình duyệt (Chrome, Edge, Firefox,...) hoặc dùng Live Server của VS Code.
