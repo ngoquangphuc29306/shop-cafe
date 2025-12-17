@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<!--
+================================================================================
+CART.HTML - Trang Giỏ hàng
+================================================================================
+
+Chức năng:
+- Hiển thị các sản phẩm đã thêm vào giỏ
+- Cho phép thay đổi số lượng (+/-)
+- Xóa sản phẩm khỏi giỏ
+- Hiển thị tổng tiền
+- Link sang trang checkout
+
+Yêu cầu: Phải đăng nhập mới có giỏ hàng
+
+Các element quan trọng (ID):
+- cartItems: Container hiển thị danh sách sản phẩm
+- cartSummary: Box tổng kết đơn hàng
+- cartTotal: Hiển thị tổng tiền
+- checkoutBtn: Nút thanh toán
+================================================================================
+-->
+<html lang="vi">
+  <head>
+    <!-- ===== META TAGS ===== -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Giỏ hàng - Kvone Coffee</title>
+    <meta name="description" content="Xem và quản lý giỏ hàng của bạn" />
+    <link rel="icon" type="image/png" href="menu/icons/coffee.png" />
+
+    <!-- View Transitions API -->
+    <meta name="view-transition" content="same-origin" />
+    <meta name="theme-color" content="#54372b" />
+
+    <!-- ===== CSS ===== -->
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/main.css" />
+  </head>
+
+  <body>
+    <div class="page-wrapper">
+      <!-- 
+        =====================================================================
+        HEADER - Tương tự index.html
+        Cart button được highlight (đang ở trang cart)
+        =====================================================================
+        -->
+      <header class="header">
+        <div class="header-container">
+          <!-- Logo -->
+          <a href="index.html" class="logo">
+            <span class="logo-icon">☕</span>
+            <span>Kvone Coffee</span>
+          </a>
+
+          <!-- Navigation -->
+          <nav class="nav" id="mainNav">
+            <a href="index.html" class="nav-link">Menu</a>
+            <a href="favorites.html" class="nav-link">Yêu thích</a>
+            <a href="orders.html" class="nav-link">Đơn hàng</a>
+          </nav>
+
+          <!-- Header Actions -->
+          <div class="header-actions">
+            <!-- 
+                    Cart Button - Được highlight vì đang ở trang cart
+                    style inline để đổi màu nền
+                    -->
+            <a
+              href="cart.html"
+              class="cart-btn"
+              style="background: var(--gradient-primary); color: white"
+            >
+              🛒
+              <span class="cart-badge" style="display: none">0</span>
+            </a>
+
+            <!-- User Menu (đã đăng nhập) -->
+            <div
+              class="user-menu"
+              id="userMenu"
+              style="display: none"
+              onclick="toggleUserDropdown()"
+            >
+              <div class="avatar">U</div>
+              <span class="user-name">User</span>
+            </div>
+
+            <!-- Auth Links (chưa đăng nhập) -->
+            <div id="authLinks" style="display: flex; gap: var(--space-2)">
+              <a href="login.html" class="btn btn-ghost btn-sm">Đăng nhập</a>
+              <a href="register.html" class="btn btn-secondary btn-sm"
+                >Đăng ký</a
+              >
+            </div>
+
+            <!-- Mobile Menu Button -->
+            <button class="mobile-menu-btn btn btn-ghost" id="mobileMenuBtn" onclick="document.querySelector('.nav').classList.toggle('active')">
+              ☰
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- 
+        =====================================================================
+        MAIN CONTENT - Nội dung chính trang giỏ hàng
+        =====================================================================
+        -->
+      <main class="main-content">
+        <div class="container cart-page">
+          <!-- Page Title -->
+          <h1 style="margin-bottom: var(--space-6)">🛒 Giỏ hàng của bạn</h1>
+
+          <!-- 
+                Grid Layout:
+                - Cột trái: Danh sách sản phẩm (cartItems)
+                - Cột phải: Tổng kết đơn hàng (cartSummary)
+                Responsive: 1 cột trên mobile
+                -->
+          <div
+            style="
+              display: grid;
+              grid-template-columns: 1fr 350px;
+              gap: var(--space-6);
+              align-items: start;
+            "
+          >
+            <!-- 
+                    CART ITEMS - Danh sách sản phẩm trong giỏ
+                    Render bằng renderCart() từ cart.js
+                    -->
+            <div class="cart-items" id="cartItems">
+              <!-- Nội dung được render động bằng JavaScript -->
+            </div>
+
+            <!-- 
+                    CART SUMMARY - Box tổng kết
+                    Ẩn mặc định, JavaScript sẽ hiện khi có sản phẩm
+                    -->
+            <div class="cart-summary" id="cartSummary" style="display: none">
+              <h3 class="cart-summary-title">Tổng đơn hàng</h3>
+
+              <!-- Chi tiết giá -->
+              <div class="price-breakdown">
+                <div class="price-row total">
+                  <span>Tổng cộng</span>
+                  <!-- ID cartTotal: JavaScript cập nhật giá trị -->
+                  <span id="cartTotal">0đ</span>
+                </div>
+              </div>
+
+              <!-- Các nút action -->
+              <div style="margin-top: var(--space-6)">
+                <!-- Nút thanh toán - Link đến checkout.html -->
+                <a
+                  href="checkout.html"
+                  class="btn btn-primary btn-lg w-full"
+                  id="checkoutBtn"
+                >
+                  Thanh toán
+                </a>
+                <!-- Nút tiếp tục mua sắm - Quay lại menu -->
+                <a
+                  href="index.html"
+                  class="btn btn-outline w-full"
+                  style="margin-top: var(--space-3)"
+                >
+                  Tiếp tục mua sắm
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- 
+        =====================================================================
+        FOOTER - Giống các trang khác
+        =====================================================================
+        -->
+      <footer class="footer">
+        <div class="footer-container">
+          <div class="footer-brand">
+            <div class="footer-logo">
+              <span>☕</span>
+              <span>Kvone Coffee</span>
+            </div>
+            <p class="footer-desc">
+              Nơi mỗi ly cà phê là một tác phẩm nghệ thuật, được pha chế với
+              tình yêu và sự tận tâm.
+            </p>
+          </div>
+
+          <div>
+            <h4 class="footer-title">Liên kết</h4>
+            <div class="footer-links">
+              <a href="index.html" class="footer-link">☕ Menu</a>
+              <a href="favorites.html" class="footer-link">💕 Yêu thích</a>
+              <a href="orders.html" class="footer-link">📋 Đơn hàng</a>
+            </div>
+          </div>
+
+          <div>
+            <h4 class="footer-title">Liên hệ</h4>
+            <div class="footer-links">
+              <span class="footer-link">📍 Nguyễn Văn Linh, Đà Nẵng</span>
+              <span class="footer-link">📞 0905580275</span>
+              <span class="footer-link">✉️ kvonecoffee@gmail.com</span>
+              <span class="footer-link">⏰ 7:00 - 22:00 hàng ngày</span>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          © 2024 Kvone Coffee. Made with ❤️ for coffee lovers.
+        </div>
+      </footer>
+    </div>
+
+    <!-- 
+    =========================================================================
+    USER DROPDOWN MENU - Menu dropdown khi click avatar
+    =========================================================================
+    -->
+    <div
+      id="userDropdown"
+      class="card"
+      style="
+        display: none;
+        position: fixed;
+        top: 70px;
+        right: 100px;
+        min-width: 220px;
+        z-index: 1000;
+        box-shadow: var(--shadow-2xl);
+      "
+    >
+      <div class="card-body" style="padding: var(--space-2)">
+        <a
+          href="orders.html"
+          class="btn btn-ghost w-full"
+          style="justify-content: flex-start; gap: var(--space-3)"
+          >📋 Đơn hàng của tôi</a
+        >
+        <a
+          href="favorites.html"
+          class="btn btn-ghost w-full"
+          style="justify-content: flex-start; gap: var(--space-3)"
+          >❤️ Yêu thích</a
+        >
+        <!-- Admin Link - Chỉ hiện cho admin -->
+        <a
+          href="admin.html"
+          id="adminLink"
+          class="btn btn-ghost w-full"
+          style="
+            display: none;
+            justify-content: flex-start;
+            gap: var(--space-3);
+            color: var(--color-primary);
+          "
+        >
+          ⚙️ Quản lý Admin
+        </a>
+        <div class="divider" style="margin: var(--space-2) 0"></div>
+        <button
+          class="btn btn-ghost w-full"
+          style="
+            justify-content: flex-start;
+            gap: var(--space-3);
+            color: var(--color-error);
+          "
+          onclick="logout()"
+        >
+          🚪 Đăng xuất
+        </button>
+      </div>
+    </div>
+
+    <!-- 
+    =========================================================================
+    JAVASCRIPT FILES
+    =========================================================================
+    -->
+    <script src="js/storage.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/products.js"></script>
+    <script src="js/sizes.js"></script>
+    <script src="js/toppings.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/favorites.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/enhancements.js"></script>
+
+    <!-- 
+    =========================================================================
+    INLINE JAVASCRIPT - Logic riêng cho trang cart
+    =========================================================================
+    -->
+    <script>
+      // =====================================================================
+      // TOGGLE USER DROPDOWN
+      // =====================================================================
+      function toggleUserDropdown() {
+        const dropdown = document.getElementById("userDropdown");
+        dropdown.style.display =
+          dropdown.style.display === "none" ? "block" : "none";
+      }
+
+      // =====================================================================
+      // CLICK OUTSIDE TO CLOSE DROPDOWN
+      // =====================================================================
+      document.addEventListener("click", function (e) {
+        const userMenu = document.getElementById("userMenu");
+        const dropdown = document.getElementById("userDropdown");
+
+        if (!userMenu?.contains(e.target) && !dropdown?.contains(e.target)) {
+          if (dropdown) dropdown.style.display = "none";
+        }
+      });
+
+      // =====================================================================
+      // DOM CONTENT LOADED
+      // =====================================================================
+      document.addEventListener("DOMContentLoaded", function () {
+        // Khởi tạo app (data, navigation, user info, cart badge)
+        initApp();
+
+        // Hiển thị Admin link nếu user là admin
+        if (isAdmin()) {
+          const adminLink = document.getElementById("adminLink");
+          if (adminLink) adminLink.style.display = "flex";
+        }
+
+        // Kiểm tra giỏ hàng trống TRƯỚC KHI render
+        const cart = getCart();
+        const summaryEl = document.getElementById("cartSummary");
+        const cartGrid = document.querySelector('.cart-page > div');
+        
+        if (cart.length === 0) {
+          // Giỏ trống -> ẩn summary ngay lập tức và center empty state
+          if (summaryEl) summaryEl.style.display = "none";
+          if (cartGrid) cartGrid.style.gridTemplateColumns = "1fr";
+        } else {
+          // Có sản phẩm -> hiện summary
+          if (summaryEl) summaryEl.style.display = "block";
+          if (cartGrid) cartGrid.style.gridTemplateColumns = "1fr 350px";
+        }
+
+        // Render giỏ hàng
+        renderCart(document.getElementById("cartItems"));
+
+        // Cập nhật tổng tiền
+        updateCartSummary();
+      });
+
+      // =====================================================================
+      // CHECK EMPTY CART - Ẩn summary box nếu giỏ trống
+      // =====================================================================
+      function checkEmptyCart() {
+        const cart = getCart();
+        const summaryEl = document.getElementById("cartSummary");
+        const cartGrid = document.querySelector('.cart-page > div');
+
+        if (cart.length === 0) {
+          // Giỏ trống -> ẩn summary và center empty state
+          if (summaryEl) summaryEl.style.display = "none";
+          if (cartGrid) cartGrid.style.gridTemplateColumns = "1fr";
+        } else {
+          // Có sản phẩm -> hiện summary và 2 cột
+          if (summaryEl) summaryEl.style.display = "block";
+          if (cartGrid) cartGrid.style.gridTemplateColumns = "1fr 350px";
+        }
+      }
+
+      // =====================================================================
+      // OVERRIDE updateCartSummary
+      // Thêm check empty cart sau mỗi lần update
+      // =====================================================================
+      const originalUpdateCartSummary = updateCartSummary;
+      updateCartSummary = function () {
+        // Gọi hàm gốc
+        originalUpdateCartSummary();
+        // Sau đó check empty
+        checkEmptyCart();
+      };
+    </script>
+
+    <!-- 
+    =========================================================================
+    INLINE CSS - Responsive cho trang cart
+    =========================================================================
+    -->
+    <style>
+      /* 
+        Responsive: Khi màn hình < 900px
+        Chuyển từ 2 cột sang 1 cột
+        */
+      @media (max-width: 900px) {
+        .cart-page > div {
+          grid-template-columns: 1fr !important;
+        }
+
+        .cart-summary {
+          /* Bỏ position sticky trên mobile */
+          position: static !important;
+        }
+      }
+      
+      /* Center empty cart state */
+      .cart-items .empty-state {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 50vh;
+        text-align: center;
+        padding: var(--space-8);
+      }
+    </style>
+  </body>
+</html>

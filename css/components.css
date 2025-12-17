@@ -1,0 +1,1741 @@
+/* ==========================================================================
+   COMPONENTS.CSS - UI Components - PREMIUM DESIGN
+   Website Bán Cà Phê
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   BUTTONS
+   -------------------------------------------------------------------------- */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-6);
+    font-size: var(--text-base);
+    font-weight: var(--font-semibold);
+    line-height: 1.2;
+    border-radius: var(--radius-xl);
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    text-decoration: none;
+    white-space: nowrap;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left var(--transition-slow);
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.btn:disabled::before {
+    display: none;
+}
+
+/* Button Primary - Premium */
+.btn-primary {
+    background: var(--gradient-primary);
+    color: white;
+    border-color: transparent;
+    box-shadow: var(--shadow-md), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.btn-primary:hover:not(:disabled) {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-xl), var(--shadow-glow);
+}
+
+.btn-primary:active:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
+/* Button Secondary - Gold */
+.btn-secondary {
+    background: var(--gradient-secondary);
+    color: var(--color-dark);
+    border-color: transparent;
+    box-shadow: var(--shadow-md), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.btn-secondary:hover:not(:disabled) {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-xl), var(--shadow-gold);
+}
+
+/* Button Outline */
+.btn-outline {
+    background: transparent;
+    color: var(--color-primary);
+    border: 2px solid var(--color-primary);
+    backdrop-filter: blur(10px);
+}
+
+.btn-outline:hover:not(:disabled) {
+    background: var(--color-primary);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+/* Button Danger */
+.btn-danger {
+    background: linear-gradient(135deg, var(--color-error) 0%, #C62828 100%);
+    color: white;
+    border-color: transparent;
+}
+
+.btn-danger:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(239, 83, 80, 0.4);
+}
+
+/* Button Ghost */
+.btn-ghost {
+    background: transparent;
+    color: var(--color-text);
+}
+
+.btn-ghost:hover:not(:disabled) {
+    background: rgba(111, 78, 55, 0.08);
+    color: var(--color-primary);
+}
+
+/* Button Sizes */
+.btn-sm {
+    padding: var(--space-2) var(--space-4);
+    font-size: var(--text-sm);
+    border-radius: var(--radius-lg);
+}
+
+.btn-lg {
+    padding: var(--space-4) var(--space-10);
+    font-size: var(--text-lg);
+    border-radius: var(--radius-2xl);
+}
+
+.btn-icon {
+    padding: var(--space-3);
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-xl);
+}
+
+/* --------------------------------------------------------------------------
+   BADGES - Nhãn trạng thái / Vai trò
+   Dùng để hiển thị trạng thái đơn hàng, vai trò user, etc.
+   -------------------------------------------------------------------------- */
+
+/* Badge cơ bản */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-1);
+    padding: var(--space-1) var(--space-3);
+    font-size: var(--text-xs);
+    font-weight: var(--font-bold);
+    line-height: 1.4;
+    border-radius: var(--radius-full);
+    white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Badge Primary - Màu nâu (cho Admin) */
+.badge-primary {
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+    color: white;
+    box-shadow: 0 2px 8px rgba(111, 78, 55, 0.3);
+}
+
+
+/* Badge Info - Màu xanh dương (cho Khách hàng) */
+.badge-info {
+    background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+    color: white;
+    box-shadow: 0 2px 8px rgba(33, 150, 243, 0.3);
+}
+
+/* Badge Success - Màu xanh lá (Hoàn thành) */
+.badge-success {
+    background: linear-gradient(135deg, var(--color-success) 0%, #388E3C 100%);
+    color: white;
+    box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+}
+
+/* Badge Warning - Màu cam (Đang xử lý) */
+.badge-warning {
+    background: linear-gradient(135deg, var(--color-warning) 0%, #F57C00 100%);
+    color: white;
+    box-shadow: 0 2px 8px rgba(255, 152, 0, 0.3);
+}
+
+/* Badge Error/Danger - Màu đỏ (Hủy) */
+.badge-error,
+.badge-danger {
+    background: linear-gradient(135deg, var(--color-error) 0%, #C62828 100%);
+    color: white;
+    box-shadow: 0 2px 8px rgba(239, 83, 80, 0.3);
+}
+
+/* Badge Secondary - Màu tím (Phục vụ) */
+.badge-secondary {
+    background: linear-gradient(135deg, #9C27B0 0%, #7B1FA2 100%);
+    color: white;
+    box-shadow: 0 2px 8px rgba(156, 39, 176, 0.3);
+}
+
+
+/* --------------------------------------------------------------------------
+   CARDS - Thẻ sản phẩm cao cấp
+   -------------------------------------------------------------------------- */
+.card {
+    background: var(--color-surface);
+    border-radius: var(--radius-2xl);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+    transition: all var(--transition-normal);
+    border: 1px solid var(--color-border-light);
+}
+
+.card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-xl);
+}
+
+
+
+.card-body {
+    padding: var(--space-6);
+}
+
+.card-header {
+    padding: var(--space-5) var(--space-6);
+    border-bottom: 1px solid var(--color-border-light);
+    background: linear-gradient(180deg, rgba(201, 168, 108, 0.05) 0%, transparent 100%);
+}
+
+.card-footer {
+    padding: var(--space-4) var(--space-6);
+    border-top: 1px solid var(--color-border-light);
+    background: var(--color-background);
+}
+
+/* Product Card - Premium Design */
+.product-card {
+    position: relative;
+    cursor: pointer;
+    background: var(--color-surface);
+    border-radius: var(--radius-2xl);
+    overflow: hidden;
+    transition: all var(--transition-normal);
+    border: 1px solid var(--color-border-light);
+}
+
+.product-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--gradient-secondary);
+    opacity: 0;
+    transition: opacity var(--transition-normal);
+}
+
+.product-card:hover::before {
+    opacity: 1;
+}
+
+.product-card:hover {
+    transform: translateY(-12px) scale(1.02);
+    box-shadow: var(--shadow-2xl);
+}
+
+.product-card-image {
+    position: relative;
+    height: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(180deg, var(--color-background) 0%, var(--color-background-dark) 100%);
+    font-size: 100px;
+    overflow: hidden;
+}
+
+.product-card-image::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60%;
+    background: linear-gradient(to top, var(--color-surface) 0%, transparent 100%);
+    pointer-events: none;
+}
+
+.product-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-slow);
+}
+
+.product-card:hover .product-card-image img {
+    transform: scale(1.1);
+}
+
+.product-card-content {
+    padding: var(--space-5);
+    position: relative;
+}
+
+.product-card-name {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: var(--font-bold);
+    color: var(--color-dark);
+    margin-bottom: var(--space-2);
+    line-height: 1.3;
+}
+
+.product-card-price {
+    font-size: var(--text-2xl);
+    font-weight: var(--font-extrabold);
+    background: var(--gradient-warm);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.product-card-actions {
+    display: flex;
+    gap: var(--space-3);
+    margin-top: var(--space-4);
+}
+
+/* --------------------------------------------------------------------------
+   FORMS - Form elements cao cấp
+   -------------------------------------------------------------------------- */
+.form-group {
+    margin-bottom: var(--space-6);
+}
+
+.form-label {
+    display: block;
+    font-size: var(--text-sm);
+    font-weight: var(--font-semibold);
+    color: var(--color-text);
+    margin-bottom: var(--space-2);
+    letter-spacing: 0.02em;
+}
+
+.form-input {
+    width: 100%;
+    padding: var(--space-4) var(--space-5);
+    font-size: var(--text-base);
+    color: var(--color-text);
+    background: var(--color-surface);
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    transition: all var(--transition-fast);
+    box-shadow: var(--shadow-xs);
+}
+
+.form-input:hover {
+    border-color: var(--color-secondary);
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 4px rgba(111, 78, 55, 0.1), var(--shadow-md);
+}
+
+.form-input::placeholder {
+    color: var(--color-text-muted);
+}
+
+.form-input:disabled {
+    background: var(--color-background-dark);
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.form-textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.form-select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%236F4E37' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right var(--space-4) center;
+    padding-right: var(--space-12);
+}
+
+.form-check {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    cursor: pointer;
+}
+
+.form-check-input {
+    width: 22px;
+    height: 22px;
+    accent-color: var(--color-primary);
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+}
+
+.form-error {
+    color: var(--color-error);
+    font-size: var(--text-sm);
+    margin-top: var(--space-2);
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.form-error::before {
+    content: '⚠';
+}
+
+.form-input.error {
+    border-color: var(--color-error);
+    box-shadow: 0 0 0 4px rgba(239, 83, 80, 0.1);
+}
+
+/* --------------------------------------------------------------------------
+   MODALS - Popup dialogs cao cấp
+   -------------------------------------------------------------------------- */
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(26, 18, 9, 0.6);
+    backdrop-filter: blur(8px);
+    z-index: var(--z-modal-backdrop);
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--transition-normal);
+}
+
+.modal-backdrop.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
+    background: var(--color-surface);
+    border-radius: var(--radius-3xl);
+    box-shadow: var(--shadow-2xl);
+    z-index: var(--z-modal);
+    width: 90%;
+    max-width: 520px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--transition-normal);
+    border: 1px solid var(--color-border-light);
+    overflow: hidden;
+}
+
+.modal.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-6);
+    border-bottom: 1px solid var(--color-border-light);
+    background: linear-gradient(180deg, rgba(201, 168, 108, 0.08) 0%, transparent 100%);
+    flex-shrink: 0;
+}
+
+.modal-title {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: var(--font-bold);
+    color: var(--color-dark);
+}
+
+.modal-close {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-full);
+    color: var(--color-text-muted);
+    font-size: var(--text-xl);
+    transition: all var(--transition-fast);
+}
+
+.modal-close:hover {
+    background: var(--color-background-dark);
+    color: var(--color-text);
+    transform: rotate(90deg);
+}
+
+.modal-body {
+    padding: var(--space-6);
+    overflow-y: auto;
+    flex: 1;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--space-3);
+    padding: var(--space-5) var(--space-6);
+    border-top: 1px solid var(--color-border-light);
+    background: var(--color-background);
+    flex-shrink: 0;
+}
+
+/* --------------------------------------------------------------------------
+   BADGES - Nhãn trạng thái cao cấp
+   -------------------------------------------------------------------------- */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--space-1) var(--space-3);
+    font-size: var(--text-xs);
+    font-weight: var(--font-bold);
+    border-radius: var(--radius-full);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.badge-primary {
+    background: linear-gradient(135deg, rgba(111, 78, 55, 0.15) 0%, rgba(111, 78, 55, 0.1) 100%);
+    color: var(--color-primary);
+}
+
+.badge-success {
+    background: linear-gradient(135deg, rgba(76, 175, 80, 0.15) 0%, rgba(76, 175, 80, 0.1) 100%);
+    color: var(--color-success);
+}
+
+.badge-warning {
+    background: linear-gradient(135deg, rgba(255, 183, 77, 0.2) 0%, rgba(255, 183, 77, 0.15) 100%);
+    color: #F57C00;
+}
+
+.badge-error {
+    background: linear-gradient(135deg, rgba(239, 83, 80, 0.15) 0%, rgba(239, 83, 80, 0.1) 100%);
+    color: var(--color-error);
+}
+
+.badge-info {
+    background: linear-gradient(135deg, rgba(66, 165, 245, 0.15) 0%, rgba(66, 165, 245, 0.1) 100%);
+    color: var(--color-info);
+}
+
+/* Cart badge - Animated */
+.cart-badge {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    min-width: 22px;
+    height: 22px;
+    padding: 0 6px;
+    background: var(--gradient-warm);
+    color: white;
+    font-size: 11px;
+    font-weight: var(--font-bold);
+    border-radius: var(--radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(224, 123, 84, 0.4);
+    animation: pulse-glow 2s infinite;
+}
+
+/* --------------------------------------------------------------------------
+   TOAST NOTIFICATIONS - Thông báo cao cấp
+   -------------------------------------------------------------------------- */
+.toast-container {
+    position: fixed;
+    top: var(--space-6);
+    right: var(--space-6);
+    z-index: var(--z-toast);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.toast {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-4) var(--space-5);
+    background: var(--color-surface);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-xl);
+    min-width: 320px;
+    max-width: 420px;
+    animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    border-left: 4px solid var(--color-primary);
+}
+
+.toast.hiding {
+    animation: toastSlideOut 0.3s ease forwards;
+}
+
+@keyframes toastSlideOut {
+    to {
+        opacity: 0;
+        transform: translateX(120%);
+    }
+}
+
+.toast-icon {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-full);
+    font-size: var(--text-lg);
+    flex-shrink: 0;
+}
+
+.toast-success {
+    border-left-color: var(--color-success);
+}
+
+.toast-success .toast-icon {
+    background: rgba(76, 175, 80, 0.15);
+    color: var(--color-success);
+}
+
+.toast-error {
+    border-left-color: var(--color-error);
+}
+
+.toast-error .toast-icon {
+    background: rgba(239, 83, 80, 0.15);
+    color: var(--color-error);
+}
+
+.toast-warning {
+    border-left-color: var(--color-warning);
+}
+
+.toast-warning .toast-icon {
+    background: rgba(255, 183, 77, 0.2);
+    color: #F57C00;
+}
+
+.toast-info {
+    border-left-color: var(--color-info);
+}
+
+.toast-info .toast-icon {
+    background: rgba(66, 165, 245, 0.15);
+    color: var(--color-info);
+}
+
+.toast-message {
+    flex: 1;
+    font-size: var(--text-sm);
+    font-weight: var(--font-medium);
+    color: var(--color-text);
+}
+
+.toast-close {
+    color: var(--color-text-muted);
+    padding: var(--space-1);
+    border-radius: var(--radius-full);
+    transition: all var(--transition-fast);
+}
+
+.toast-close:hover {
+    background: var(--color-background-dark);
+    color: var(--color-text);
+}
+
+/* --------------------------------------------------------------------------
+   TABLES - Bảng dữ liệu cao cấp
+   Hỗ trợ cả class .table và .data-table
+   -------------------------------------------------------------------------- */
+.table-container {
+    overflow-x: auto;
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--color-border-light);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-sm);
+}
+
+.table,
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th,
+.table td,
+.data-table th,
+.data-table td {
+    padding: var(--space-4) var(--space-5);
+    text-align: left;
+    vertical-align: middle;
+    border-bottom: 1px solid var(--color-border-light);
+}
+
+.table th,
+.data-table th {
+    background: linear-gradient(180deg, var(--color-background) 0%, var(--color-background-dark) 100%);
+    font-weight: var(--font-semibold);
+    color: var(--color-dark);
+    font-size: var(--text-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+}
+
+.table tbody tr,
+.data-table tbody tr {
+    transition: background var(--transition-fast);
+}
+
+.table tbody tr:hover,
+.data-table tbody tr:hover {
+    background: rgba(201, 168, 108, 0.05);
+}
+
+.table tbody tr:last-child td,
+.data-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* --------------------------------------------------------------------------
+   FAVORITE BUTTON - Nút yêu thích cao cấp
+   -------------------------------------------------------------------------- */
+.favorite-btn {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-full);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-md);
+    color: var(--color-text-muted);
+    transition: all var(--transition-normal);
+    position: absolute;
+    top: var(--space-4);
+    right: var(--space-4);
+    z-index: 10;
+    font-size: var(--text-xl);
+}
+
+.favorite-btn:hover {
+    transform: scale(1.15);
+    box-shadow: var(--shadow-lg);
+}
+
+.favorite-btn.active {
+    color: var(--color-accent);
+    animation: heartBeat 0.5s ease;
+}
+
+@keyframes heartBeat {
+    0% {
+        transform: scale(1);
+    }
+
+    25% {
+        transform: scale(1.3);
+    }
+
+    50% {
+        transform: scale(1);
+    }
+
+    75% {
+        transform: scale(1.2);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* --------------------------------------------------------------------------
+   QUANTITY CONTROLS - Điều khiển số lượng cao cấp
+   -------------------------------------------------------------------------- */
+.quantity-control {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    background: var(--color-background);
+    border-radius: var(--radius-xl);
+    padding: var(--space-1);
+    border: 2px solid var(--color-border-light);
+}
+
+.quantity-btn {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-surface);
+    border-radius: var(--radius-lg);
+    color: var(--color-text);
+    font-size: var(--text-xl);
+    font-weight: var(--font-bold);
+    transition: all var(--transition-fast);
+    box-shadow: var(--shadow-xs);
+}
+
+.quantity-btn:hover:not(:disabled) {
+    background: var(--gradient-primary);
+    color: white;
+    transform: scale(1.05);
+    box-shadow: var(--shadow-md);
+}
+
+.quantity-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.quantity-value {
+    min-width: 50px;
+    text-align: center;
+    font-size: var(--text-xl);
+    font-weight: var(--font-bold);
+    color: var(--color-dark);
+}
+
+/* --------------------------------------------------------------------------
+   TABS - Tab navigation cao cấp
+   -------------------------------------------------------------------------- */
+.tabs {
+    display: flex;
+    gap: var(--space-2);
+    background: var(--color-background);
+    padding: var(--space-2);
+    border-radius: var(--radius-xl);
+    overflow-x: auto;
+    border: 1px solid var(--color-border-light);
+}
+
+.tab-btn {
+    padding: var(--space-3) var(--space-5);
+    font-size: var(--text-sm);
+    font-weight: var(--font-semibold);
+    color: var(--color-text-muted);
+    border-radius: var(--radius-lg);
+    transition: all var(--transition-fast);
+    white-space: nowrap;
+    position: relative;
+}
+
+.tab-btn:hover {
+    color: var(--color-text);
+    background: rgba(111, 78, 55, 0.05);
+}
+
+.tab-btn.active {
+    background: var(--color-surface);
+    color: var(--color-primary);
+    box-shadow: var(--shadow-md);
+}
+
+.tab-content {
+    display: none;
+    padding: var(--space-6) 0;
+    animation: fadeIn 0.3s ease;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --------------------------------------------------------------------------
+   SIZE & TOPPING SELECTORS - Premium Design
+   -------------------------------------------------------------------------- */
+.size-selector {
+    display: flex;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+}
+
+.size-option {
+    flex: 1;
+    min-width: 110px;
+}
+
+.size-option input {
+    display: none;
+}
+
+.size-option label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-5);
+    background: var(--color-surface);
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    text-align: center;
+}
+
+.size-option label:hover {
+    border-color: var(--color-secondary);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.size-option input:checked+label {
+    border-color: var(--color-primary);
+    background: linear-gradient(180deg, rgba(111, 78, 55, 0.08) 0%, rgba(111, 78, 55, 0.03) 100%);
+    box-shadow: var(--shadow-lg), inset 0 0 0 1px var(--color-primary);
+}
+
+.size-name {
+    font-weight: var(--font-bold);
+    color: var(--color-dark);
+    font-size: var(--text-lg);
+}
+
+.size-price {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+}
+
+/* Topping selector */
+.topping-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.topping-option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-4);
+    background: var(--color-surface);
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+}
+
+.topping-option:hover {
+    border-color: var(--color-secondary);
+    transform: translateX(4px);
+    box-shadow: var(--shadow-md);
+}
+
+.topping-option.selected {
+    border-color: var(--color-primary);
+    background: linear-gradient(90deg, rgba(111, 78, 55, 0.08) 0%, transparent 100%);
+}
+
+.topping-info {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+}
+
+.topping-checkbox {
+    width: 24px;
+    height: 24px;
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    transition: all var(--transition-fast);
+    font-size: var(--text-sm);
+}
+
+.topping-option.selected .topping-checkbox {
+    background: var(--gradient-primary);
+    border-color: var(--color-primary);
+    box-shadow: var(--shadow-sm);
+}
+
+.topping-name {
+    font-weight: var(--font-semibold);
+    color: var(--color-dark);
+}
+
+.topping-price {
+    font-size: var(--text-sm);
+    color: var(--color-accent);
+    font-weight: var(--font-bold);
+}
+
+/* --------------------------------------------------------------------------
+   RATING, EMPTY STATE, SPINNER, UTILITIES
+   -------------------------------------------------------------------------- */
+.rating {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.rating-stars {
+    display: flex;
+    gap: 2px;
+    color: var(--color-secondary);
+    filter: drop-shadow(0 2px 4px rgba(201, 168, 108, 0.3));
+}
+
+.rating-count {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    font-weight: var(--font-medium);
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+/* --------------------------------------------------------------------------
+   CATEGORY TABS
+   -------------------------------------------------------------------------- */
+.category-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--space-3);
+    padding: var(--space-4) 0;
+}
+
+/* Mobile: Horizontal scroll instead of wrap */
+@media (max-width: 768px) {
+    .category-tabs {
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding: var(--space-4) var(--space-4);
+        margin: 0 calc(-1 * var(--container-padding));
+        padding-left: var(--container-padding);
+        padding-right: var(--container-padding);
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none; /* IE/Edge */
+    }
+    
+    .category-tabs::-webkit-scrollbar {
+        display: none; /* Chrome/Safari */
+    }
+    
+    .category-tab {
+        flex-shrink: 0; /* Prevent tabs from shrinking */
+        white-space: nowrap;
+    }
+}
+
+.category-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-5);
+    font-size: var(--text-sm);
+    font-weight: var(--font-semibold);
+    color: var(--color-text-muted);
+    background: var(--color-surface);
+    border: 2px solid var(--color-border);
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+}
+
+.category-tab:hover {
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+    background: rgba(139, 90, 43, 0.05);
+    transform: translateY(-2px);
+}
+
+.category-tab.active {
+    color: white;
+    background: var(--gradient-primary);
+    border-color: transparent;
+    box-shadow: var(--shadow-md), var(--shadow-glow);
+}
+
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-20);
+    text-align: center;
+    min-height: 50vh;
+    width: 100%;
+    grid-column: 1 / -1;
+    margin: 0 auto;
+}
+
+.empty-state-icon {
+    font-size: 80px;
+    margin-bottom: var(--space-6);
+    animation: float 3s ease-in-out infinite;
+}
+
+.empty-state-title {
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-weight: var(--font-bold);
+    color: var(--color-dark);
+    margin-bottom: var(--space-3);
+}
+
+.empty-state-text {
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-8);
+    max-width: 300px;
+}
+
+.spinner {
+    width: 48px;
+    height: 48px;
+    border: 4px solid var(--color-background-dark);
+    border-top-color: var(--color-primary);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--color-border), transparent);
+    margin: var(--space-6) 0;
+}
+
+.avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-full);
+    background: var(--gradient-secondary);
+    color: var(--color-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: var(--font-bold);
+    font-size: var(--text-base);
+    text-transform: uppercase;
+    box-shadow: var(--shadow-sm);
+}
+
+.price {
+    font-weight: var(--font-extrabold);
+    color: var(--color-primary);
+}
+
+.price-breakdown {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding: var(--space-5);
+    background: linear-gradient(135deg, var(--color-background) 0%, var(--color-background-dark) 100%);
+    border-radius: var(--radius-xl);
+    border: 1px solid var(--color-border-light);
+}
+
+.price-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: var(--text-sm);
+    color: var(--color-text-light);
+}
+
+.price-row.total {
+    font-size: var(--text-xl);
+    font-weight: var(--font-bold);
+    color: var(--color-dark);
+    padding-top: var(--space-4);
+    border-top: 2px dashed var(--color-border);
+    margin-top: var(--space-2);
+}
+
+.price-row.total span:last-child {
+    background: var(--gradient-warm);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.search-bar {
+    position: relative;
+    max-width: 480px;
+    width: 100%;
+}
+
+.search-bar .form-input {
+    padding-left: var(--space-12);
+    border-radius: var(--radius-full);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-md);
+    border-color: transparent;
+}
+
+.search-bar .form-input:focus {
+    box-shadow: var(--shadow-lg), 0 0 0 4px rgba(201, 168, 108, 0.2);
+}
+
+.search-bar-icon {
+    position: absolute;
+    left: var(--space-5);
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-text-muted);
+    font-size: var(--text-lg);
+}
+
+/* --------------------------------------------------------------------------
+   TOGGLE SWITCH - Công tắc bật/tắt
+   Dùng cho trạng thái active của Size, Topping, Danh mục
+   -------------------------------------------------------------------------- */
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 52px;
+    height: 28px;
+    flex-shrink: 0;
+}
+
+/* Ẩn input gốc */
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* Thanh trượt - Trạng thái TẮT */
+.switch-slider {
+    position: absolute;
+    cursor: pointer;
+    inset: 0;
+    /* Màu xám đậm hơn khi tắt để dễ thấy */
+    background: #ccc;
+    border: 2px solid #bbb;
+    border-radius: var(--radius-full);
+    transition: all var(--transition-fast);
+}
+
+/* Nút tròn bên trong */
+.switch-slider::before {
+    content: '';
+    position: absolute;
+    height: 20px;
+    width: 20px;
+    left: 2px;
+    bottom: 2px;
+    background: white;
+    border-radius: 50%;
+    transition: all var(--transition-fast);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Thanh trượt - Trạng thái BẬT */
+.switch input:checked+.switch-slider {
+    background: linear-gradient(135deg, var(--color-success) 0%, #388E3C 100%);
+    border-color: var(--color-success);
+    box-shadow: 0 2px 8px rgba(76, 175, 80, 0.4);
+}
+
+/* Nút tròn khi BẬT - Di chuyển sang phải */
+.switch input:checked+.switch-slider::before {
+    transform: translateX(24px);
+}
+
+/* Hover effect */
+.switch:hover .switch-slider {
+    filter: brightness(1.05);
+}
+
+/* Focus effect cho accessibility */
+.switch input:focus+.switch-slider {
+    box-shadow: 0 0 0 3px rgba(111, 78, 55, 0.2);
+}
+
+/* ==========================================================================
+   SKELETON LOADING (Hiệu ứng khung xương khi tải trang)
+   ========================================================================== */
+
+/* 
+   Class .skeleton: Tạo hiệu ứng shimmer (lấp lánh) chạy qua chạy lại
+   Dùng cho các khối text, hình ảnh chưa load xong
+*/
+.skeleton {
+    background: #f0f0f0;
+    /* Gradient tạo hiệu ứng shimmer: Xám nhạt -> Xám trắng -> Xám nhạt */
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    /* Animation chạy liên tục 1.5s */
+    animation: skeleton-loading 1.5s infinite;
+    border-radius: var(--radius-md);
+    /* Ẩn text bên trong (nếu có) để tránh lộ nội dung chưa style */
+    color: transparent !important;
+}
+
+/* Keyframes cho animation shimmer */
+@keyframes skeleton-loading {
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+/* 
+   .skeleton-card: Card giả lập khung sản phẩm
+   Dùng thay thế cho .product-card thật khi đang load
+*/
+.skeleton-card {
+    background: var(--color-surface);
+    border-radius: var(--radius-2xl);
+    overflow: hidden;
+    border: 1px solid var(--color-border-light);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Khung giả lập hình ảnh sản phẩm */
+.skeleton-image {
+    height: 220px;
+    width: 100%;
+    background: #e0e0e0;
+    /* Màu nền cho ảnh */
+}
+
+/* Khung chứa nội dung text */
+.skeleton-content {
+    padding: var(--space-5);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+/* Khung giả lập các dòng text */
+.skeleton-text {
+    height: 20px;
+    border-radius: 4px;
+}
+
+.skeleton-title {
+    height: 28px;
+    width: 80%;
+    /* Giả lập tiêu đề dài 80% */
+}
+
+.skeleton-price {
+    height: 32px;
+    width: 40%;
+    /* Giả lập giá tiền */
+    margin-top: auto;
+    /* Đẩy xuống dưới cùng */
+}
+
+.skeleton-btn {
+    height: 40px;
+    width: 100%;
+    border-radius: var(--radius-xl);
+    margin-top: var(--space-4);
+}
+
+/* ==========================================================================
+   ANIMATIONS & MICRO-INTERACTIONS (Hiệu ứng tương tác nhỏ)
+   ========================================================================== */
+
+/* 
+   Fade In: Hiệu ứng hiện dần lên
+   Dùng cho card sản phẩm khi vừa load xong
+*/
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+        /* Dịch chuyển từ dưới lên 10px */
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.6s ease-out forwards;
+}
+
+/* 
+   Lazy Load Image Fade In:
+   Ảnh ban đầu ẩn (opacity: 0), khi load xong sẽ hiện dần (opacity: 1)
+*/
+.img-fade-in {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.img-loaded {
+    opacity: 1;
+}
+
+/* 
+   Heart Burst: Hiệu ứng tim đập khi bấm Yêu thích 
+   Scale: 1 -> 1.4 -> 1 (Phóng to rồi thu nhỏ)
+*/
+@keyframes heartBurst {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.4);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+.favorite-btn:active {
+    animation: heartBurst 0.3s ease;
+}
+
+/* 
+   Button Press Effect: Hiệu ứng nhấn nút
+   Nút thu nhỏ lại một chút (scale 0.95) tạo cảm giác vật lý
+*/
+.btn:active {
+    transform: scale(0.95) !important;
+}
+
+/* Class tiện ích dùng chung cho hiệu ứng click */
+.click-effect {
+    transition: transform 0.1s;
+}
+
+.click-effect:active {
+    transform: scale(0.95);
+}
+
+/* --------------------------------------------------------------------------
+   REVIEWS SECTION - Đánh giá sản phẩm
+   -------------------------------------------------------------------------- */
+.reviews-section {
+    margin-top: var(--space-8);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--color-border-light);
+}
+
+.reviews-title {
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: var(--font-bold);
+    color: var(--color-dark);
+    margin-bottom: var(--space-6);
+}
+
+/* Reviews Summary - Tổng quan */
+.reviews-summary {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--space-6);
+    margin-bottom: var(--space-6);
+    padding: var(--space-5);
+    background: var(--color-background);
+    border-radius: var(--radius-xl);
+}
+
+.reviews-average {
+    text-align: center;
+    padding-right: var(--space-6);
+    border-right: 1px solid var(--color-border-light);
+}
+
+.average-score {
+    font-size: 3rem;
+    font-weight: var(--font-extrabold);
+    color: var(--color-primary);
+    line-height: 1;
+}
+
+.average-stars {
+    font-size: var(--text-lg);
+    color: var(--color-secondary);
+    margin: var(--space-2) 0;
+}
+
+.total-reviews {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+}
+
+/* Rating Distribution - Phân bố sao */
+.rating-distribution {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    justify-content: center;
+}
+
+.rating-bar-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+}
+
+.rating-label {
+    width: 30px;
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+}
+
+.rating-bar {
+    flex: 1;
+    height: 8px;
+    background: var(--color-border-light);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+}
+
+.rating-bar-fill {
+    height: 100%;
+    background: var(--gradient-secondary);
+    border-radius: var(--radius-full);
+    transition: width var(--transition-normal);
+}
+
+.rating-count {
+    width: 30px;
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    text-align: right;
+}
+
+/* Star Rating Input - Interactive stars */
+.star-rating-input {
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+    margin-bottom: var(--space-3);
+}
+
+.star-input {
+    font-size: 2rem;
+    color: var(--color-border);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.star-input:hover,
+.star-input.highlighted {
+    color: var(--color-secondary);
+    transform: scale(1.2);
+}
+
+.star-input.selected {
+    color: var(--color-secondary);
+}
+
+/* Star display - Hiển thị sao có màu */
+.star-filled {
+    color: #FFB800; /* Vàng gold */
+}
+
+.star-empty {
+    color: var(--color-border); /* Xám nhạt */
+}
+
+.rating-text {
+    margin-left: var(--space-3);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    font-style: italic;
+}
+
+/* Character counter */
+.char-counter {
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    text-align: right;
+    margin-top: calc(-1 * var(--space-2));
+    margin-bottom: var(--space-3);
+}
+
+/* Review Form */
+.review-form {
+    margin-bottom: var(--space-6);
+}
+
+.review-form .card-body {
+    padding: var(--space-5);
+}
+
+/* Reviews List */
+.reviews-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+}
+
+.empty-reviews {
+    text-align: center;
+    padding: var(--space-8);
+    color: var(--color-text-muted);
+    background: var(--color-background);
+    border-radius: var(--radius-xl);
+}
+
+/* Review Card */
+.review-card {
+    padding: var(--space-4);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--radius-xl);
+    transition: all var(--transition-fast);
+}
+
+.review-card:hover {
+    box-shadow: var(--shadow-md);
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-3);
+    flex-wrap: wrap;
+    gap: var(--space-2);
+}
+
+.review-user {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+.review-avatar {
+    font-size: var(--text-xl);
+}
+
+.review-name {
+    font-weight: var(--font-semibold);
+    color: var(--color-dark);
+}
+
+.review-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+}
+
+.review-stars {
+    color: var(--color-secondary);
+}
+
+.review-time {
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+}
+
+.review-comment {
+    color: var(--color-text);
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Rating on Product Card */
+.product-card-rating {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-bottom: var(--space-2);
+}
+
+.product-card-rating .stars {
+    color: var(--color-secondary);
+    font-size: var(--text-sm);
+}
+
+.product-card-rating .count {
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .reviews-summary {
+        grid-template-columns: 1fr;
+    }
+    
+    .reviews-average {
+        padding-right: 0;
+        padding-bottom: var(--space-4);
+        border-right: none;
+        border-bottom: 1px solid var(--color-border-light);
+    }
+    
+    .star-input {
+        font-size: 1.5rem;
+    }
+}

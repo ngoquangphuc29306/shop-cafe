@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<!--
+================================================================================
+PRODUCT-DETAIL.HTML - Trang Chi tiết Sản phẩm
+================================================================================
+
+Chức năng:
+- Hiển thị thông tin chi tiết sản phẩm (tên, mô tả, đánh giá)
+- Cho phép chọn size và topping
+- Tùy chỉnh số lượng
+- Hiển thị giá tổng động (thay đổi khi chọn option)
+- Thêm vào yêu thích
+- Thêm vào giỏ hàng
+
+URL Format: product-detail.html?id=PRODUCT_ID
+
+Các element quan trọng (ID):
+- productDetail: Container chính chứa thông tin sản phẩm
+- sizeOptions: Container cho các option size
+- toppingOptions: Container cho các option topping
+- builderQuantity: Hiển thị số lượng
+- priceBreakdown: Bảng chi tiết giá
+- totalPrice: Hiển thị tổng tiền
+- favoriteBtn: Nút yêu thích
+================================================================================
+-->
+<html lang="vi">
+  <head>
+    <!-- ===== META TAGS ===== -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Title sẽ được cập nhật bằng JavaScript với tên sản phẩm -->
+    <title>Chi tiết sản phẩm - Kvone Coffee</title>
+    <meta
+      name="description"
+      content="Xem chi tiết và tùy chỉnh đồ uống theo ý thích của bạn"
+    />
+    <link rel="icon" type="image/png" href="menu/icons/coffee.png" />
+
+    <!-- View Transitions API -->
+    <meta name="view-transition" content="same-origin" />
+    <meta name="theme-color" content="#54372b" />
+
+    <!-- ===== CSS ===== -->
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/main.css" />
+  </head>
+
+  <body>
+    <div class="page-wrapper">
+      <!-- 
+        =====================================================================
+        HEADER - Giống các trang khác
+        =====================================================================
+        -->
+      <header class="header">
+        <div class="header-container">
+          <a href="index.html" class="logo">
+            <span class="logo-icon">☕</span>
+            <span>Kvone Coffee</span>
+          </a>
+
+          <nav class="nav" id="mainNav">
+            <a href="index.html" class="nav-link">Menu</a>
+            <a href="favorites.html" class="nav-link">Yêu thích</a>
+            <a href="orders.html" class="nav-link">Đơn hàng</a>
+          </nav>
+
+          <div class="header-actions">
+            <a href="cart.html" class="cart-btn">
+              🛒
+              <span class="cart-badge" style="display: none">0</span>
+            </a>
+
+            <div
+              class="user-menu"
+              id="userMenu"
+              style="display: none"
+              onclick="toggleUserDropdown()"
+            >
+              <div class="avatar">U</div>
+              <span class="user-name">User</span>
+            </div>
+
+            <div id="authLinks" style="display: flex; gap: var(--space-2)">
+              <a href="login.html" class="btn btn-ghost btn-sm">Đăng nhập</a>
+              <a href="register.html" class="btn btn-secondary btn-sm"
+                >Đăng ký</a
+              >
+            </div>
+
+            <button class="mobile-menu-btn btn btn-ghost" id="mobileMenuBtn" onclick="document.querySelector('.nav').classList.toggle('active')">
+              ☰
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- 
+        =====================================================================
+        MAIN CONTENT
+        =====================================================================
+        -->
+      <main class="main-content">
+        <div class="container">
+          <!-- 
+                Breadcrumb - Link quay lại menu
+                Giúp user dễ dàng quay lại danh sách sản phẩm
+                -->
+          <div style="padding: var(--space-4) 0">
+            <a href="index.html" style="color: var(--color-text-muted)"
+              >← Quay lại menu</a
+            >
+          </div>
+
+          <!-- 
+                PRODUCT DETAIL Container
+                Nội dung được render động bằng JavaScript
+                Bao gồm: hình ảnh, thông tin, options, nút thêm giỏ
+                -->
+          <div class="product-detail" id="productDetail">
+            <!-- Render bằng JavaScript trong renderProductDetail() -->
+          </div>
+        </div>
+      </main>
+
+      <!-- 
+        =====================================================================
+        FOOTER
+        =====================================================================
+        -->
+      <footer class="footer">
+        <div class="footer-container">
+          <div class="footer-brand">
+            <div class="footer-logo">
+              <span>☕</span>
+              <span>Kvone Coffee</span>
+            </div>
+            <p class="footer-desc">
+              Nơi mỗi ly cà phê là một tác phẩm nghệ thuật, được pha chế với
+              tình yêu và sự tận tâm.
+            </p>
+          </div>
+
+          <div>
+            <h4 class="footer-title">Liên kết</h4>
+            <div class="footer-links">
+              <a href="index.html" class="footer-link">☕ Menu</a>
+              <a href="favorites.html" class="footer-link">💕 Yêu thích</a>
+              <a href="orders.html" class="footer-link">📋 Đơn hàng</a>
+            </div>
+          </div>
+
+          <div>
+            <h4 class="footer-title">Liên hệ</h4>
+            <div class="footer-links">
+              <span class="footer-link">📍 Nguyễn Văn Linh, Đà Nẵng</span>
+              <span class="footer-link">📞 0905580275</span>
+              <span class="footer-link">✉️ kvonecoffee@gmail.com</span>
+              <span class="footer-link">⏰ 7:00 - 22:00 hàng ngày</span>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          © 2024 Kvone Coffee. Made with ❤️ for coffee lovers.
+        </div>
+      </footer>
+    </div>
+
+    <!-- 
+    =========================================================================
+    USER DROPDOWN MENU
+    =========================================================================
+    -->
+    <div
+      id="userDropdown"
+      class="card"
+      style="
+        display: none;
+        position: fixed;
+        top: 70px;
+        right: 100px;
+        min-width: 220px;
+        z-index: 1000;
+        box-shadow: var(--shadow-2xl);
+      "
+    >
+      <div class="card-body" style="padding: var(--space-2)">
+        <a
+          href="orders.html"
+          class="btn btn-ghost w-full"
+          style="justify-content: flex-start; gap: var(--space-3)"
+          >📋 Đơn hàng của tôi</a
+        >
+        <a
+          href="favorites.html"
+          class="btn btn-ghost w-full"
+          style="justify-content: flex-start; gap: var(--space-3)"
+          >❤️ Yêu thích</a
+        >
+        <a
+          href="admin.html"
+          id="adminLink"
+          class="btn btn-ghost w-full"
+          style="
+            display: none;
+            justify-content: flex-start;
+            gap: var(--space-3);
+            color: var(--color-primary);
+          "
+        >
+          ⚙️ Quản lý Admin
+        </a>
+        <div class="divider" style="margin: var(--space-2) 0"></div>
+        <button
+          class="btn btn-ghost w-full"
+          style="
+            justify-content: flex-start;
+            gap: var(--space-3);
+            color: var(--color-error);
+          "
+          onclick="logout()"
+        >
+          🚪 Đăng xuất
+        </button>
+      </div>
+    </div>
+
+    <!-- 
+    =========================================================================
+    JAVASCRIPT FILES
+    Lưu ý: Cần load builder.js cho trang này
+    =========================================================================
+    -->
+    <script src="js/storage.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/products.js"></script>
+    <script src="js/sizes.js"></script>
+    <script src="js/toppings.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/favorites.js"></script>
+    <script src="js/reviews.js"></script>
+    <!-- Reviews cho đánh giá sản phẩm -->
+    <script src="js/builder.js"></script>
+    <!-- Builder cho trang chi tiết -->
+    <script src="js/app.js"></script>
+    <script src="js/enhancements.js"></script>
+
+    <!-- 
+    =========================================================================
+    INLINE JAVASCRIPT
+    =========================================================================
+    -->
+    <script>
+      // =====================================================================
+      // TOGGLE USER DROPDOWN
+      // =====================================================================
+      function toggleUserDropdown() {
+        const dropdown = document.getElementById("userDropdown");
+        dropdown.style.display =
+          dropdown.style.display === "none" ? "block" : "none";
+      }
+
+      // =====================================================================
+      // CLICK OUTSIDE TO CLOSE DROPDOWN
+      // =====================================================================
+      document.addEventListener("click", function (e) {
+        const userMenu = document.getElementById("userMenu");
+        const dropdown = document.getElementById("userDropdown");
+
+        if (!userMenu?.contains(e.target) && !dropdown?.contains(e.target)) {
+          if (dropdown) dropdown.style.display = "none";
+        }
+      });
+
+      // =====================================================================
+      // DOM CONTENT LOADED
+      // =====================================================================
+      document.addEventListener("DOMContentLoaded", function () {
+        // Khởi tạo app
+        initApp();
+
+        // Hiển thị Admin link nếu là admin
+        if (isAdmin()) {
+          const adminLink = document.getElementById("adminLink");
+          if (adminLink) adminLink.style.display = "flex";
+        }
+
+        // ===== LẤY PRODUCT ID TỪ URL =====
+        // URL format: product-detail.html?id=p123
+        const productId = getUrlParam("id");
+
+        // Nếu không có ID, redirect về menu
+        if (!productId) {
+          window.location.href = "index.html";
+          return;
+        }
+
+        // Render chi tiết sản phẩm
+        renderProductDetail(productId);
+      });
+
+      // =====================================================================
+      // RENDER PRODUCT DETAIL - Vẽ giao diện chi tiết sản phẩm
+      // =====================================================================
+      function renderProductDetail(productId) {
+        const container = document.getElementById("productDetail");
+
+        // Lấy thông tin sản phẩm từ storage
+        const product = getProductById(productId);
+
+        // ===== SẢN PHẨM KHÔNG TỒN TẠI =====
+        if (!product) {
+          container.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1 / -1;">
+                        <div class="empty-state-icon">😕</div>
+                        <h3 class="empty-state-title">Không tìm thấy sản phẩm</h3>
+                        <p class="empty-state-text">Sản phẩm này không tồn tại hoặc đã bị xóa.</p>
+                        <a href="index.html" class="btn btn-primary">Quay lại menu</a>
+                    </div>
+                `;
+          return;
+        }
+
+        // ===== CẬP NHẬT TITLE TRANG =====
+        document.title = `${product.name} - Kvone Coffee`;
+
+        // ===== KIỂM TRA HÌNH ẢNH =====
+        const isImageUrl =
+          product.image &&
+          (product.image.startsWith("data:") ||
+            product.image.startsWith("http") ||
+            product.image.includes("/"));
+        const imageHtml = isImageUrl
+          ? `<img src="${product.image}" alt="${product.name}" style="width: 100%; height: 100%; object-fit: cover;">`
+          : product.image;
+
+        // ===== RENDER HTML CHO SẢN PHẨM =====
+        container.innerHTML = `
+                <!-- 
+                HÌNH ẢNH SẢN PHẨM
+                Kết hợp với nút yêu thích ở góc
+                -->
+                <div class="product-detail-image">
+                    ${imageHtml}
+                    <!-- 
+                    NÚT YÊU THÍCH
+                    class 'active' khi đã thêm vào favorites
+                    onclick toggle và cập nhật button
+                    -->
+                    <button class="favorite-btn ${
+                      isFavorite(product.id) ? "active" : ""
+                    }" 
+                            onclick="toggleFavorite('${
+                              product.id
+                            }'); updateFavoriteBtn();"
+                            id="favoriteBtn">
+                        ${isFavorite(product.id) ? "❤️" : "🤍"}
+                    </button>
+                </div>
+
+                <!-- THÔNG TIN VÀ TÙY CHỌN -->
+                <div class="product-detail-info">
+                    <!-- Thông tin cơ bản -->
+                    <div>
+                        <!-- 
+                        RATING HEADER - Dynamic từ reviews.js
+                        Dùng renderStars() để hiển thị sao có màu
+                        - Chưa đánh giá: ☆☆☆☆☆ (5 sao rỗng xám)
+                        - Có đánh giá: ★★★★☆ hoặc ★★★★½ (vàng)
+                        -->
+                        <div class="rating" id="headerRating" style="margin-bottom: var(--space-2);">
+                            <div class="rating-stars">${
+                                typeof renderStars === 'function' 
+                                    ? renderStars(
+                                        typeof getAverageRating === 'function' 
+                                            ? getAverageRating(product.id) 
+                                            : 0
+                                      )
+                                    : '☆☆☆☆☆'
+                            }</div>
+                            <span class="rating-count">(${
+                                typeof getReviewCount === 'function' 
+                                    ? getReviewCount(product.id) 
+                                    : 0
+                            } đánh giá)</span>
+                        </div>
+                        <!-- Tên sản phẩm -->
+                        <h1 class="product-detail-name">${product.name}</h1>
+                        <!-- Mô tả -->
+                        <p class="product-detail-desc">${
+                          product.description
+                        }</p>
+                    </div>
+
+                    <!-- 
+                    BUILDER SECTION: CHỌN SIZE
+                    Nội dung render bởi builder.js -> renderSizeOptions()
+                    -->
+                    <div class="builder-section">
+                        <h3 class="builder-section-title">📐 Chọn Size</h3>
+                        <div id="sizeOptions">
+                            <!-- Render bằng JS -->
+                        </div>
+                    </div>
+
+                    <!-- 
+                    BUILDER SECTION: CHỌN TOPPING
+                    Nội dung render bởi builder.js -> renderToppingOptions()
+                    -->
+                    <div class="builder-section">
+                        <h3 class="builder-section-title">🧁 Chọn Topping</h3>
+                        <div id="toppingOptions">
+                            <!-- Render bằng JS -->
+                        </div>
+                    </div>
+
+                    <!-- 
+                    BUILDER SECTION: SỐ LƯỢNG
+                    Nút +/- để thay đổi
+                    -->
+                    <div class="builder-section">
+                        <h3 class="builder-section-title">📦 Số lượng</h3>
+                        <div class="quantity-control">
+                            <button class="quantity-btn" onclick="handleBuilderQuantity(-1)">−</button>
+                            <span class="quantity-value" id="builderQuantity">1</span>
+                            <button class="quantity-btn" onclick="handleBuilderQuantity(1)">+</button>
+                        </div>
+                    </div>
+
+                    <!-- 
+                    BẢNG CHI TIẾT GIÁ
+                    Hiển thị: giá gốc, giá size, giá topping, tổng
+                    Cập nhật động bởi builder.js -> updatePriceDisplay()
+                    -->
+                    <div class="price-breakdown" id="priceBreakdown">
+                        <!-- Render bằng JS -->
+                    </div>
+
+                    <!-- 
+                    NÚT THÊM VÀO GIỎ
+                    Gọi addToCartFromBuilder() từ builder.js
+                    Hiển thị tổng tiền trên nút
+                    -->
+                    <button class="btn btn-primary btn-lg w-full" onclick="addToCartFromBuilder()">
+                        🛒 Thêm vào giỏ hàng - <span id="totalPrice">0đ</span>
+                    </button>
+                </div>
+
+                <!-- 
+                REVIEWS SECTION - Full width dưới 2 cột
+                Di chuyển ra ngoài product-detail-info để cân bằng layout
+                -->
+                <div id="reviewsSection" style="grid-column: 1 / -1;"></div>
+            `;
+
+        // ===== KHỞI TẠO BUILDER =====
+        // Sau khi render HTML xong, gọi initBuilder để setup logic
+        initBuilder(productId);
+
+        // ===== RENDER REVIEWS =====
+        // Render form đánh giá và danh sách reviews
+        const reviewsContainer = document.getElementById('reviewsSection');
+        if (reviewsContainer && typeof renderReviewsSection === 'function') {
+            renderReviewsSection(reviewsContainer, productId);
+        }
+      }
+
+      // =====================================================================
+      // UPDATE FAVORITE BUTTON - Cập nhật trạng thái nút yêu thích
+      // =====================================================================
+      function updateFavoriteBtn() {
+        const productId = getUrlParam("id");
+        const btn = document.getElementById("favoriteBtn");
+
+        if (btn) {
+          const isFav = isFavorite(productId);
+          // Toggle class active
+          btn.classList.toggle("active", isFav);
+          // Thay đổi icon
+          btn.innerHTML = isFav ? "❤️" : "🤍";
+        }
+      }
+    </script>
+  </body>
+</html>

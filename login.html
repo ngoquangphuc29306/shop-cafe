@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<!--
+================================================================================
+LOGIN.HTML - Trang Đăng nhập
+================================================================================
+
+Chức năng:
+- Form đăng nhập với email và password
+- Hiển thị tài khoản admin mẫu để test
+- Redirect về trang trước đó sau khi đăng nhập (nếu có ?return=URL)
+- Tự động redirect nếu đã đăng nhập
+- Admin được chuyển đến admin.html, user được chuyển đến index.html
+
+Các element quan trọng (ID):
+- loginForm: Form đăng nhập
+- email: Input email
+- password: Input password
+- errorMessage: Div hiển thị lỗi
+================================================================================
+-->
+<html lang="vi">
+  <head>
+    <!-- ===== META TAGS ===== -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Đăng nhập - Kvone Coffee</title>
+    <meta
+      name="description"
+      content="Đăng nhập vào Kvone Coffee để đặt hàng và quản lý đơn hàng"
+    />
+    <link rel="icon" type="image/png" href="menu/icons/coffee.png" />
+    <!-- ===== CSS ===== -->
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/main.css" />
+  </head>
+
+  <body>
+    <!-- 
+    =========================================================================
+    AUTH PAGE - Layout đặc biệt cho trang xác thực
+    Căn giữa form login cả dọc và ngang
+    =========================================================================
+    -->
+    <div class="auth-page">
+      <div class="auth-container">
+        <!-- 
+            AUTH CARD - Card chứa form đăng nhập
+            Có header, body (form), footer (link đăng ký)
+            -->
+        <div class="auth-card">
+          <!-- ===== HEADER: Logo và Title ===== -->
+          <div class="auth-header">
+            <!-- Logo icon -->
+            <div class="auth-logo">☕</div>
+            <!-- Title chính -->
+            <h1 class="auth-title">Đăng nhập</h1>
+            <!-- Subtitle -->
+            <p class="auth-subtitle">Chào mừng bạn trở lại!</p>
+          </div>
+
+          <!-- ===== BODY: Form đăng nhập ===== -->
+          <div class="auth-body">
+            <!-- 
+                    FORM ĐĂNG NHẬP
+                    onsubmit="handleLogin(event)": Xử lý bằng JavaScript
+                    event.preventDefault() ngăn form reload trang
+                    -->
+            <form id="loginForm" onsubmit="handleLogin(event)">
+              <!-- Form Group: Email -->
+              <div class="form-group">
+                <label class="form-label" for="email">Email</label>
+                <input
+                  type="email"
+                  class="form-input"
+                  id="email"
+                  name="email"
+                  placeholder="email@example.com"
+                  required
+                />
+                <!-- 
+                            type="email": Browser tự validate format email
+                            required: Không được để trống
+                            -->
+              </div>
+
+              <!-- Form Group: Mật khẩu -->
+              <div class="form-group">
+                <label class="form-label" for="password">Mật khẩu</label>
+                <input
+                  type="password"
+                  class="form-input"
+                  id="password"
+                  name="password"
+                  placeholder="Nhập mật khẩu"
+                  required
+                />
+                <!-- type="password": Ẩn ký tự khi gõ -->
+              </div>
+
+              <!-- 
+                        Thông báo lỗi
+                        Ẩn mặc định, JavaScript hiển thị khi đăng nhập thất bại
+                        -->
+              <div
+                id="errorMessage"
+                class="form-error"
+                style="display: none"
+              ></div>
+
+              <!-- Nút Submit -->
+              <button type="submit" class="btn btn-primary btn-lg w-full">
+                Đăng nhập
+              </button>
+            </form>
+
+            <!-- 
+                    Box thông tin tài khoản Admin mẫu
+                    Để người dùng test tính năng admin
+                    -->
+
+          </div>
+
+          <!-- ===== FOOTER: Link đăng ký ===== -->
+          <div class="auth-footer">
+            <p class="auth-footer-text">
+              Chưa có tài khoản?
+              <a href="register.html" class="auth-footer-link">Đăng ký ngay</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 
+    =========================================================================
+    JAVASCRIPT FILES
+    Chỉ load những file cần thiết cho trang login
+    =========================================================================
+    -->
+    <script src="js/storage.js"></script>
+    <!-- LocalStorage functions -->
+    <script src="js/auth.js"></script>
+    <!-- Login/register functions -->
+    <script src="js/app.js"></script>
+    <!-- Utilities (showNotification, getUrlParam) -->
+
+    <!-- 
+    =========================================================================
+    INLINE JAVASCRIPT - Logic riêng cho trang login
+    =========================================================================
+    -->
+    <script>
+      // =====================================================================
+      // HANDLE LOGIN - Xử lý submit form đăng nhập
+      // =====================================================================
+      function handleLogin(event) {
+        // Ngăn form submit mặc định (reload trang)
+        event.preventDefault();
+
+        // Lấy dữ liệu từ form
+        const form = event.target;
+        const email = form.email.value.trim(); // trim() bỏ khoảng trắng
+        const password = form.password.value;
+
+        // Element hiển thị lỗi
+        const errorEl = document.getElementById("errorMessage");
+
+        // Gọi hàm login() từ auth.js
+        // Trả về { success, message, user }
+        const result = login(email, password);
+
+        if (result.success) {
+          // ===== ĐĂNG NHẬP THÀNH CÔNG =====
+
+          // Hiển thị thông báo thành công (toast)
+          showNotification(result.message, "success");
+
+          // Lấy URL để quay lại (nếu có)
+          // Ví dụ: login.html?return=cart.html
+          const returnUrl = getUrlParam("return");
+
+          // Delay 500ms để user thấy thông báo, sau đó redirect
+          setTimeout(() => {
+            if (result.user.role === "admin") {
+              // Admin -> trang admin hoặc URL return
+              window.location.href = returnUrl || "admin.html";
+            } else {
+              // User thường -> trang chủ hoặc URL return
+              window.location.href = returnUrl || "index.html";
+            }
+          }, 500);
+        } else {
+          // ===== ĐĂNG NHẬP THẤT BẠI =====
+
+          // Hiển thị thông báo lỗi
+          errorEl.textContent = result.message;
+          errorEl.style.display = "block";
+        }
+      }
+
+      // =====================================================================
+      // DOM CONTENT LOADED - Chạy khi trang load xong
+      // =====================================================================
+      document.addEventListener("DOMContentLoaded", function () {
+        // Khởi tạo dữ liệu mặc định (tạo admin account nếu chưa có)
+        initializeDefaultData();
+
+        // Tạo container cho toast notifications
+        createToastContainer();
+
+        // ===== AUTO REDIRECT NẾU ĐÃ ĐĂNG NHẬP =====
+        // Không cần login lại nếu đã có session
+        if (isLoggedIn()) {
+          const user = getCurrentUser();
+
+          if (user.role === "admin") {
+            // Admin -> trang admin
+            window.location.href = "admin.html";
+          } else {
+            // User -> trang chủ
+            window.location.href = "index.html";
+          }
+        }
+      });
+
+      // =====================================================================
+      // CREATE TOAST CONTAINER - Tạo container cho thông báo
+      // (Phải có trước khi gọi showNotification)
+      // =====================================================================
+      function createToastContainer() {
+        // Kiểm tra đã có container chưa
+        if (!document.querySelector(".toast-container")) {
+          const container = document.createElement("div");
+          container.className = "toast-container";
+          document.body.appendChild(container);
+        }
+      }
+    </script>
+  </body>
+</html>

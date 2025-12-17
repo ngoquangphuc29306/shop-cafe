@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<!--
+================================================================================
+INDEX.HTML - Trang chủ chính của Website Bán Cà Phê
+================================================================================
+
+Cấu trúc trang:
+1. HEAD: Meta tags, SEO, liên kết CSS
+2. HEADER: Logo, navigation, auth buttons, cart
+3. HERO: Banner chính giới thiệu thương hiệu
+4. PRODUCTS: Danh sách sản phẩm với filter và search
+5. FEATURES: Điểm nổi bật của quán
+6. FOOTER: Thông tin liên hệ, liên kết
+7. SCRIPTS: Load các file JavaScript
+
+Các element quan trọng (ID):
+- mainHeader: Header chính (sticky)
+- productGrid: Container hiển thị sản phẩm
+- categoryTabs: Tabs chọn danh mục
+- searchInput: Ô tìm kiếm sản phẩm
+- userMenu: Menu user (khi đã đăng nhập)
+- authLinks: Nút đăng nhập/đăng ký (khi chưa đăng nhập)
+- userDropdown: Dropdown menu của user
+================================================================================
+-->
+<html lang="vi">
+  <!-- lang="vi": Ngôn ngữ tiếng Việt cho SEO và accessibility -->
+
+  <head>
+    <!-- ===== META TAGS CƠ BẢN ===== -->
+    <!-- Charset UTF-8: Hỗ trợ tiếng Việt -->
+    <meta charset="UTF-8" />
+
+    <!-- Viewport: Responsive trên mobile -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Title: Hiển thị trên tab trình duyệt và kết quả tìm kiếm -->
+    <title>Kvone Coffee - Thưởng thức cà phê chất lượng</title>
+
+    <!-- Description: Mô tả cho SEO (hiển thị dưới title trên Google) -->
+    <meta
+      name="description"
+      content="Kvone Coffee - Nơi bạn thưởng thức những ly cà phê thơm ngon nhất"
+    />
+
+    <link rel="icon" type="image/png" href="menu/icons/coffee.png" />
+
+    <!-- View Transitions API - Smooth page transitions -->
+    <meta name="view-transition" content="same-origin" />
+
+    <!-- Theme color for mobile browsers -->
+    <meta name="theme-color" content="#54372b" />
+
+    <!-- ===== LIÊN KẾT CSS ===== -->
+    <!-- Google Fonts: Playfair Display (display font) + Inter (body text) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    
+    <!-- main.css: File CSS tổng hợp, import các file khác -->
+    <link rel="stylesheet" href="css/main.css" />
+  </head>
+
+  <body>
+    <!-- 
+    =========================================================================
+    PAGE WRAPPER - Bao bọc toàn bộ nội dung trang
+    Giúp layout và styling toàn cục
+    =========================================================================
+    -->
+    <div class="page-wrapper">
+      <!-- 
+        =====================================================================
+        HEADER - Thanh điều hướng chính
+        - Sticky: Cố định khi scroll với class "scrolled"
+        - Chứa: Logo, Navigation, Cart, User menu
+        =====================================================================
+        -->
+      <header class="header" id="mainHeader">
+        <div class="header-container">
+          <!-- Logo - Link về trang chủ -->
+          <a href="index.html" class="logo">
+            <span class="logo-icon">☕</span>
+            <span>Kvone Coffee</span>
+          </a>
+
+          <!-- 
+                Navigation chính
+                - Class "nav" để styling
+                - ID để JavaScript toggle menu mobile
+                -->
+          <nav class="nav" id="mainNav">
+            <a href="index.html" class="nav-link active">Menu</a>
+            <a href="favorites.html" class="nav-link">Yêu thích</a>
+            <a href="orders.html" class="nav-link">Đơn hàng</a>
+          </nav>
+
+          <!-- Các nút action bên phải header -->
+          <div class="header-actions">
+            <!-- 
+                    Cart Button - Link đến trang giỏ hàng
+                    Badge hiển thị số lượng sản phẩm trong giỏ
+                    -->
+            <a href="cart.html" class="cart-btn">
+              🛒
+              <!-- Badge ẩn mặc định, JavaScript sẽ hiển thị nếu có item -->
+              <span class="cart-badge" style="display: none">0</span>
+            </a>
+
+            <!-- 
+                    User Menu - Hiển thị khi ĐÃ ĐĂNG NHẬP
+                    Được renderUserInfo() trong auth.js quản lý
+                    Click để mở dropdown menu
+                    -->
+            <div
+              class="user-menu"
+              id="userMenu"
+              style="display: none"
+              onclick="toggleUserDropdown()"
+            >
+              <!-- Avatar: Hiển thị chữ cái đầu tên -->
+              <div class="avatar">U</div>
+              <!-- Tên user -->
+              <span class="user-name">User</span>
+            </div>
+
+            <!-- 
+                    Auth Links - Hiển thị khi CHƯA ĐĂNG NHẬP
+                    Được renderUserInfo() trong auth.js quản lý
+                    -->
+            <div id="authLinks" style="display: flex; gap: var(--space-2)">
+              <a href="login.html" class="btn btn-ghost btn-sm">Đăng nhập</a>
+              <a href="register.html" class="btn btn-secondary btn-sm"
+                >Đăng ký</a
+              >
+            </div>
+
+            <!-- 
+                    Mobile Menu Button - Nút hamburger (☰)
+                    Chỉ hiển thị trên mobile để toggle navigation
+                    -->
+            <button class="mobile-menu-btn btn btn-ghost" id="mobileMenuBtn" onclick="document.querySelector('.nav').classList.toggle('active')">
+              ☰
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- 
+        =====================================================================
+        MAIN CONTENT - Nội dung chính của trang
+        =====================================================================
+        -->
+      <main class="main-content">
+        <!-- 
+            =================================================================
+            HERO SECTION - Banner chính
+            Giới thiệu thương hiệu và call-to-action
+            =================================================================
+            -->
+        <section class="hero">
+          <div class="hero-container">
+            <!-- Badge nhỏ phía trên title -->
+            <span class="hero-badge">✨ Chất lượng hàng đầu</span>
+
+            <!-- Tiêu đề chính -->
+            <h1 class="hero-title">
+              Khởi đầu ngày mới với<br />
+              <span class="hero-title-accent">ly cà phê hoàn hảo</span>
+            </h1>
+
+            <!-- Mô tả phụ -->
+            <p class="hero-subtitle">
+              Thưởng thức hương vị cà phê đậm đà, được pha chế từ những hạt cà
+              phê chọn lọc kỹ lưỡng. Mỗi ly là một trải nghiệm tuyệt vời.
+            </p>
+
+            <!-- Các nút CTA (Call-to-Action) -->
+            <div class="hero-actions">
+              <!-- href="#products" scroll xuống phần sản phẩm -->
+              <a href="#products" class="btn btn-primary btn-lg">
+                ☕ Xem Menu
+              </a>
+              <a href="orders.html" class="btn btn-outline btn-lg">
+                📋 Đơn hàng của tôi
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <!-- 
+            =================================================================
+            PRODUCTS SECTION - Danh sách sản phẩm
+            Hiển thị các sản phẩm cà phê với filter và search
+            =================================================================
+            -->
+        <section class="section" id="products">
+          <div class="container">
+            <!-- Header của section -->
+            <div class="section-header">
+              <h2 class="section-title">Menu Cà Phê</h2>
+              <p class="section-subtitle">
+                Khám phá bộ sưu tập cà phê đặc biệt, được pha chế với tình yêu
+                và sự tận tâm
+              </p>
+            </div>
+
+            <!-- 
+                    Category Tabs - Tabs lọc theo danh mục
+                    Render bằng JavaScript trong renderCategoryTabs()
+                    -->
+            <div
+              class="category-tabs"
+              id="categoryTabs"
+              style="margin-bottom: var(--space-6)"
+            >
+              <!-- Nội dung được render động bằng JavaScript -->
+            </div>
+
+            <!-- 
+                    Search Bar + Price Sort - Thanh tìm kiếm và sắp xếp giá
+                    Layout: Search bên trái, Sort bên phải
+                    -->
+            <div class="search-sort-container" style="
+              display: flex; 
+              flex-wrap: wrap;
+              gap: var(--space-4); 
+              align-items: center; 
+              justify-content: center;
+              max-width: 700px; 
+              margin: 0 auto var(--space-6);
+            ">
+              <!-- Search Bar -->
+              <div class="search-bar" style="flex: 1; min-width: 250px;">
+                <span class="search-bar-icon">🔍</span>
+                <input
+                  type="text"
+                  class="form-input"
+                  id="searchInput"
+                  placeholder="Tìm kiếm cà phê..."
+                  oninput="handleSearch(this.value)"
+                />
+              </div>
+
+              <!-- Price Sort Dropdown -->
+              <div class="price-sort-wrapper" style="display: flex; align-items: center; gap: var(--space-2);">
+                <select 
+                  id="priceSortSelect" 
+                  class="form-input"
+                  onchange="handlePriceSort(this.value)"
+                  style="
+                    padding: var(--space-2) var(--space-4);
+                    border-radius: var(--radius-lg);
+                    background: var(--color-surface);
+                    border: 1px solid var(--color-border);
+                    cursor: pointer;
+                    font-size: var(--text-sm);
+                    min-width: 160px;
+                  "
+                >
+                  <option value="none">Sắp xếp giá</option>
+                  <option value="low-high">Giá thấp → cao</option>
+                  <option value="high-low">Giá cao → thấp</option>
+                </select>
+
+                <!-- Clear Sort Button - Ẩn mặc định -->
+                <button 
+                  id="clearSortBtn" 
+                  class="btn btn-ghost btn-sm"
+                  onclick="clearPriceSort()"
+                  style="display: none; padding: var(--space-2);"
+                  title="Xóa bộ lọc"
+                >
+                  ✕
+                </button>
+              </div>
+            </div>
+
+            <!-- 
+                    Product Grid - Lưới hiển thị sản phẩm
+                    Render bằng renderProducts() từ products.js
+                    Grid responsive: 1 cột mobile, 2-4 cột desktop
+                    -->
+            <div class="product-grid" id="productGrid">
+              <!-- Sản phẩm được render động bằng JavaScript -->
+            </div>
+          </div>
+        </section>
+
+        <!-- 
+            =================================================================
+            FEATURES SECTION - Điểm nổi bật
+            Giới thiệu các ưu điểm của quán
+            =================================================================
+            -->
+        <section class="section" style="background: var(--color-surface)">
+          <div class="container">
+            <div class="section-header">
+              <h2 class="section-title">Tại sao chọn chúng tôi?</h2>
+              <p class="section-subtitle">
+                Cam kết mang đến trải nghiệm cà phê tuyệt vời nhất
+              </p>
+            </div>
+
+            <!-- Grid 3 cột cho features -->
+            <div
+              style="
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                gap: var(--space-8);
+              "
+            >
+              <!-- Feature 1: Hạt cà phê -->
+              <div
+                class="card"
+                style="text-align: center; padding: var(--space-8)"
+              >
+                <div style="margin-bottom: var(--space-4)">
+                  <img
+                    src="menu/icons/coffee.png"
+                    alt="Hạt cà phê"
+                    style="width: 48px; height: 48px; margin: 0 auto"
+                  />
+                </div>
+                <h3
+                  style="
+                    font-family: var(--font-display);
+                    font-size: var(--text-xl);
+                    margin-bottom: var(--space-3);
+                  "
+                >
+                  Hạt cà phê chọn lọc
+                </h3>
+                <p style="color: var(--color-text-muted)">
+                  Hạt cà phê Arabica và Robusta cao cấp từ Đà Lạt, Buôn Ma Thuột
+                </p>
+              </div>
+
+              <!-- Feature 2: Barista -->
+              <div
+                class="card"
+                style="text-align: center; padding: var(--space-8)"
+              >
+                <div style="font-size: 48px; margin-bottom: var(--space-4)">
+                  👨‍🍳
+                </div>
+                <h3
+                  style="
+                    font-family: var(--font-display);
+                    font-size: var(--text-xl);
+                    margin-bottom: var(--space-3);
+                  "
+                >
+                  Barista chuyên nghiệp
+                </h3>
+                <p style="color: var(--color-text-muted)">
+                  Đội ngũ barista được đào tạo bài bản, đam mê với nghề
+                </p>
+              </div>
+
+              <!-- Feature 3: Giao hàng -->
+              <div
+                class="card"
+                style="text-align: center; padding: var(--space-8)"
+              >
+                <div style="font-size: 48px; margin-bottom: var(--space-4)">
+                  ⚡
+                </div>
+                <h3
+                  style="
+                    font-family: var(--font-display);
+                    font-size: var(--text-xl);
+                    margin-bottom: var(--space-3);
+                  "
+                >
+                  Giao hàng nhanh chóng
+                </h3>
+                <p style="color: var(--color-text-muted)">
+                  Giao hàng trong vòng 30 phút, đảm bảo cà phê luôn tươi ngon
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <!-- 
+        =====================================================================
+        FOOTER - Chân trang
+        Thông tin liên hệ, liên kết, bản quyền
+        =====================================================================
+        -->
+      <footer class="footer">
+        <div class="footer-container">
+          <!-- Brand info -->
+          <div class="footer-brand">
+            <div class="footer-logo">
+              <span>☕</span>
+              <span>Kvone Coffee</span>
+            </div>
+            <p class="footer-desc">
+              Nơi mỗi ly cà phê là một tác phẩm nghệ thuật, được pha chế với
+              tình yêu và sự tận tâm. Chúng tôi cam kết mang đến trải nghiệm cà
+              phê tuyệt vời nhất cho bạn.
+            </p>
+          </div>
+
+          <!-- Quick links -->
+          <div>
+            <h4 class="footer-title">Liên kết</h4>
+            <div class="footer-links">
+              <a href="index.html" class="footer-link">☕ Menu</a>
+              <a href="favorites.html" class="footer-link">💕 Yêu thích</a>
+              <a href="orders.html" class="footer-link">📋 Đơn hàng</a>
+            </div>
+          </div>
+
+          <!-- Contact info -->
+          <div>
+            <h4 class="footer-title">Liên hệ</h4>
+            <div class="footer-links">
+              <span class="footer-link">📍 Nguyễn Văn Linh, Đà Nẵng</span>
+              <span class="footer-link">📞 0905580275</span>
+              <span class="footer-link">✉️ kvonecoffee@gmail.com</span>
+              <span class="footer-link">⏰ 7:00 - 22:00 hàng ngày</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Copyright -->
+        <div class="footer-bottom">
+          © 2024 Kvone Coffee. Made with ❤️ for coffee lovers.
+        </div>
+      </footer>
+    </div>
+
+    <!-- 
+    =========================================================================
+    USER DROPDOWN MENU - Menu dropdown khi click vào avatar
+    Position: fixed, hiển thị dưới header
+    Ẩn mặc định, JavaScript toggle visibility
+    =========================================================================
+    -->
+    <div
+      id="userDropdown"
+      class="card"
+      style="
+        display: none;
+        position: fixed;
+        top: 70px;
+        right: 100px;
+        min-width: 220px;
+        z-index: 1000;
+        box-shadow: var(--shadow-2xl);
+      "
+    >
+      <div class="card-body" style="padding: var(--space-2)">
+        <!-- Link đến trang đơn hàng -->
+        <a
+          href="orders.html"
+          class="btn btn-ghost w-full"
+          style="justify-content: flex-start; gap: var(--space-3)"
+          >📋 Đơn hàng của tôi</a
+        >
+        <!-- Link đến trang yêu thích -->
+        <a
+          href="favorites.html"
+          class="btn btn-ghost w-full"
+          style="justify-content: flex-start; gap: var(--space-3)"
+          >❤️ Yêu thích</a
+        >
+        <!-- 
+            Admin Link - Chỉ hiển thị cho admin
+            JavaScript kiểm tra isAdmin() và show/hide
+            -->
+        <a
+          href="admin.html"
+          id="adminLink"
+          class="btn btn-ghost w-full"
+          style="
+            display: none;
+            justify-content: flex-start;
+            gap: var(--space-3);
+            color: var(--color-primary);
+          "
+        >
+          ⚙️ Quản lý Admin
+        </a>
+        <div class="divider" style="margin: var(--space-2) 0"></div>
+        <!-- Nút đăng xuất -->
+        <button
+          class="btn btn-ghost w-full"
+          style="
+            justify-content: flex-start;
+            gap: var(--space-3);
+            color: var(--color-error);
+          "
+          onclick="logout()"
+        >
+          🚪 Đăng xuất
+        </button>
+      </div>
+    </div>
+
+    <!-- 
+    =========================================================================
+    JAVASCRIPT FILES - Các file JS cần load
+    THỨ TỰ RẤT QUAN TRỌNG:
+    1. storage.js - STORAGE_KEYS và các hàm localStorage (phải load đầu tiên)
+    2. auth.js - Xác thực (phụ thuộc storage.js)
+    3. reviews.js - Đánh giá sản phẩm (phụ thuộc storage.js) - PHẢI TRƯỚC products.js
+    4. products.js - Sản phẩm (phụ thuộc storage.js, reviews.js)
+    5. sizes.js - Sizes (phụ thuộc storage.js)
+    6. toppings.js - Toppings (phụ thuộc storage.js)
+    7. cart.js - Giỏ hàng (phụ thuộc products, sizes, toppings)
+    8. favorites.js - Yêu thích (phụ thuộc products)
+    9. categories.js - Danh mục (phụ thuộc storage.js)
+    10. app.js - Khởi tạo (phụ thuộc tất cả file trên)
+    =========================================================================
+    -->
+    <script src="js/storage.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/reviews.js"></script>
+    <!-- reviews.js PHẢI trước products.js để renderStars() hoạt động -->
+    <script src="js/products.js"></script>
+    <script src="js/sizes.js"></script>
+    <script src="js/toppings.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/favorites.js"></script>
+    <script src="js/categories.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/enhancements.js"></script>
+
+    <!-- 
+    =========================================================================
+    INLINE JAVASCRIPT - Logic riêng cho trang index.html
+    =========================================================================
+    -->
+    <script>
+      // =====================================================================
+      // BIẾN TOÀN CỤC
+      // =====================================================================
+
+      // Danh mục đang được chọn để filter
+      // 'all' = Tất cả sản phẩm
+      // Hoặc ID danh mục cụ thể (ví dụ: 'cat1')
+      let currentCategory = "all";
+
+      // Sắp xếp giá hiện tại
+      // 'none' = Không sắp xếp (mặc định)
+      // 'low-high' = Giá thấp đến cao
+      // 'high-low' = Giá cao đến thấp
+      let currentPriceSort = "none";
+
+      // =====================================================================
+      // KHỞI TẠO TRANG - Chạy khi DOM ready
+      // CẬP NHẬT: Thêm hiệu ứng Skeleton Loading
+      // =====================================================================
+      document.addEventListener("DOMContentLoaded", function () {
+        // Gọi initApp() từ app.js
+        initApp();
+
+        // Render các tab danh mục
+        renderCategoryTabs();
+
+        const productGrid = document.getElementById("productGrid");
+
+        // 1. Hiển thị Skeleton loading trước
+        renderSkeletons(productGrid, 8); // Hiển thị 8 khung xương giả lập
+
+        // 2. Giả lập delay (để người dùng kịp nhìn thấy hiệu ứng loading đẹp mắt)
+        // Trong thực tế sẽ là await fetch API...
+        setTimeout(() => {
+          // 3. Render sản phẩm thật sau khi "tải xong"
+          // Gọi filterByCategory('all') thay vì renderProducts trực tiếp
+          // để áp dụng logic ẩn sản phẩm thuộc danh mục đã tắt
+          filterByCategory('all');
+        }, 500); // Delay 0.5 giây
+
+        // Hiển thị Admin link nếu user là admin
+        if (isAdmin()) {
+          const adminLink = document.getElementById("adminLink");
+          if (adminLink) {
+            adminLink.style.display = "flex";
+          }
+        }
+
+        // Header scroll effect is handled by enhancements.js HeaderGlass
+      });
+
+      // =====================================================================
+      // RENDER CATEGORY TABS - Vẽ các tab danh mục
+      // =====================================================================
+      function renderCategoryTabs() {
+        const container = document.getElementById("categoryTabs");
+
+        // getCategories(true) - Chỉ lấy danh mục có active = true
+        const categories = getCategories(true);
+
+        container.innerHTML = `
+                <!-- Tab "Tất cả" luôn có -->
+                <button class="category-tab ${
+                  currentCategory === "all" ? "active" : ""
+                }" 
+                        onclick="filterByCategory('all')">
+                    🍵 Tất cả
+                </button>
+                
+                <!-- Render các tab danh mục từ database -->
+                ${categories
+                  .map(
+                    (cat) => `
+                    <button class="category-tab ${
+                      currentCategory === cat.id ? "active" : ""
+                    }" 
+                            onclick="filterByCategory('${cat.id}')">
+                        ${renderCategoryIcon(cat.icon, 20)} ${cat.name}
+                    </button>
+                `
+                  )
+                  .join("")}
+            `;
+      }
+
+      // =====================================================================
+      // FILTER BY CATEGORY - Lọc sản phẩm theo danh mục
+      // =====================================================================
+      function filterByCategory(categoryId) {
+        // Lưu danh mục được chọn
+        currentCategory = categoryId;
+
+        // Re-render tabs để cập nhật class "active"
+        renderCategoryTabs();
+
+        const productGrid = document.getElementById("productGrid");
+        
+        // ========== LẤY DANH SÁCH ID DANH MỤC ĐANG ACTIVE ==========
+        /**
+         * Khi admin tắt danh mục → Ẩn luôn TẤT CẢ sản phẩm thuộc danh mục đó
+         * 
+         * Logic:
+         * - Lấy danh sách ID các danh mục đang active
+         * - Filter sản phẩm: chỉ giữ lại sản phẩm có categoryId active
+         *   HOẶC không có categoryId (sản phẩm chưa phân loại)
+         */
+        const activeCategories = getCategories(true);
+        const activeCategoryIds = activeCategories.map(cat => cat.id);
+        
+        let products;
+
+        if (categoryId === "all") {
+          // Lấy tất cả sản phẩm NHƯNG chỉ những sản phẩm thuộc danh mục đang active
+          products = getProducts().filter(p => {
+            if (!p.categoryId) return true; // Sản phẩm không có danh mục → hiển thị
+            return activeCategoryIds.includes(p.categoryId);
+          });
+        } else {
+          // Lọc theo categoryId được chọn
+          products = getProducts().filter((p) => p.categoryId === categoryId);
+        }
+
+        // Áp dụng sắp xếp giá (nếu có)
+        products = applySortToProducts(products);
+
+        // Render lại danh sách sản phẩm
+        renderProducts(productGrid, products);
+      }
+
+      // =====================================================================
+      // HANDLE SEARCH - Xử lý tìm kiếm
+      // Sử dụng debounce để tránh gọi quá nhiều lần
+      // =====================================================================
+      const handleSearch = debounce(function (query) {
+        const productGrid = document.getElementById("productGrid");
+
+        // Tìm kiếm theo query
+        let products = searchProducts(query);
+        
+        // ========== ẨN SẢN PHẨM THUỘC DANH MỤC ĐÃ TẮT ==========
+        /**
+         * Khi search cũng cần filter theo danh mục active
+         * Sản phẩm thuộc danh mục đã tắt sẽ không hiện trong kết quả tìm kiếm
+         */
+        const activeCategories = getCategories(true);
+        const activeCategoryIds = activeCategories.map(cat => cat.id);
+        
+        products = products.filter(p => {
+          if (!p.categoryId) return true;
+          return activeCategoryIds.includes(p.categoryId);
+        });
+
+        // Kết hợp với filter danh mục hiện tại
+        if (currentCategory !== "all") {
+          products = products.filter((p) => p.categoryId === currentCategory);
+        }
+
+        // Áp dụng sắp xếp giá (nếu có)
+        products = applySortToProducts(products);
+
+        // Render kết quả
+        renderProducts(productGrid, products);
+      }, 300); // 300ms delay
+
+      // =====================================================================
+      // USER DROPDOWN - Toggle menu dropdown của user
+      // =====================================================================
+      function toggleUserDropdown() {
+        const dropdown = document.getElementById("userDropdown");
+        // Toggle visibility
+        dropdown.style.display =
+          dropdown.style.display === "none" ? "block" : "none";
+      }
+
+      // =====================================================================
+      // CLICK OUTSIDE TO CLOSE - Đóng dropdown khi click bên ngoài
+      // =====================================================================
+      document.addEventListener("click", function (e) {
+        const userMenu = document.getElementById("userMenu");
+        const dropdown = document.getElementById("userDropdown");
+
+        // Kiểm tra click có phải bên ngoài userMenu và dropdown không
+        // Optional chaining (?.) để tránh lỗi nếu element null
+        if (!userMenu?.contains(e.target) && !dropdown?.contains(e.target)) {
+          // Ẩn dropdown
+          if (dropdown) dropdown.style.display = "none";
+        }
+      });
+
+      // =====================================================================
+      // PRICE SORT - Sắp xếp sản phẩm theo giá
+      // =====================================================================
+      
+      /**
+       * Xử lý khi thay đổi dropdown sắp xếp giá
+       * 
+       * @param {string} sortType - 'none', 'low-high', 'high-low'
+       */
+      function handlePriceSort(sortType) {
+        currentPriceSort = sortType;
+        
+        // Cập nhật UI (nút xóa, trạng thái)
+        updateSortUI();
+        
+        // Áp dụng lại tất cả filters với sort mới
+        applyAllFilters();
+        
+        // Scroll về đầu danh sách sản phẩm
+        scrollToProducts();
+      }
+      
+      /**
+       * Xóa bộ lọc giá - reset về mặc định
+       */
+      function clearPriceSort() {
+        currentPriceSort = "none";
+        
+        // Reset dropdown về mặc định
+        const select = document.getElementById("priceSortSelect");
+        if (select) select.value = "none";
+        
+        // Cập nhật UI
+        updateSortUI();
+        
+        // Áp dụng lại filters
+        applyAllFilters();
+      }
+      
+      /**
+       * Cập nhật giao diện liên quan đến sort
+       * - Hiện/ẩn nút xóa bộ lọc (X) bên cạnh dropdown
+       */
+      function updateSortUI() {
+        const clearBtn = document.getElementById("clearSortBtn");
+        
+        if (currentPriceSort === "none") {
+          // Ẩn nút xóa
+          if (clearBtn) clearBtn.style.display = "none";
+        } else {
+          // Hiện nút xóa
+          if (clearBtn) clearBtn.style.display = "flex";
+        }
+      }
+      
+      /**
+       * Sắp xếp mảng sản phẩm theo giá
+       * 
+       * @param {Array} products - Mảng sản phẩm cần sắp xếp
+       * @returns {Array} Mảng đã được sắp xếp
+       */
+      function applySortToProducts(products) {
+        if (currentPriceSort === "none") return products;
+        
+        // Tạo bản sao để không thay đổi mảng gốc
+        const sorted = [...products];
+        
+        if (currentPriceSort === "low-high") {
+          sorted.sort((a, b) => a.price - b.price);
+        } else if (currentPriceSort === "high-low") {
+          sorted.sort((a, b) => b.price - a.price);
+        }
+        
+        return sorted;
+      }
+      
+      /**
+       * Scroll mượt về đầu danh sách sản phẩm
+       */
+      function scrollToProducts() {
+        const productSection = document.getElementById("products");
+        if (productSection) {
+          productSection.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }
+      
+      /**
+       * Áp dụng tất cả filters (category, search, price sort)
+       * Hàm tổng hợp để tránh duplicate code
+       */
+      function applyAllFilters() {
+        const productGrid = document.getElementById("productGrid");
+        const searchInput = document.getElementById("searchInput");
+        const query = searchInput ? searchInput.value.trim() : "";
+        
+        // 1. Lấy sản phẩm theo danh mục active
+        const activeCategories = getCategories(true);
+        const activeCategoryIds = activeCategories.map(cat => cat.id);
+        
+        let products;
+        
+        if (query) {
+          // Có search query → dùng search
+          products = searchProducts(query);
+        } else {
+          // Không có query → lấy tất cả
+          products = getProducts();
+        }
+        
+        // 2. Filter theo danh mục active
+        products = products.filter(p => {
+          if (!p.categoryId) return true;
+          return activeCategoryIds.includes(p.categoryId);
+        });
+        
+        // 3. Filter theo category tab hiện tại
+        if (currentCategory !== "all") {
+          products = products.filter(p => p.categoryId === currentCategory);
+        }
+        
+        // 4. Áp dụng sắp xếp giá
+        products = applySortToProducts(products);
+        
+        // 5. Render kết quả
+        renderProducts(productGrid, products);
+      }
+    </script>
+  </body>
+</html>

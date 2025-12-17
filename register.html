@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Đăng ký - Kvone Coffee</title>
+    <meta
+      name="description"
+      content="Đăng ký tài khoản để đặt hàng và nhận ưu đãi từ Kvone Coffee"
+    />
+    <link rel="icon" type="image/png" href="menu/icons/coffee.png" />
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/main.css" />
+  </head>
+
+  <body>
+    <!-- Trang đăng ký -->
+    <div class="auth-page">
+      <div class="auth-container">
+        <div class="auth-card">
+          <div class="auth-header">
+            <div class="auth-logo">☕</div>
+            <h1 class="auth-title">Tạo tài khoản</h1>
+            <p class="auth-subtitle">Đăng ký để bắt đầu đặt hàng</p>
+          </div>
+
+          <div class="auth-body">
+            <form id="registerForm" onsubmit="handleRegister(event)">
+              <!-- Họ tên -->
+              <div class="form-group">
+                <label class="form-label" for="name">Họ và tên</label>
+                <input
+                  type="text"
+                  class="form-input"
+                  id="name"
+                  name="name"
+                  placeholder="Nguyễn Văn A"
+                  required
+                />
+              </div>
+
+              <!-- Email -->
+              <div class="form-group">
+                <label class="form-label" for="email">Email</label>
+                <input
+                  type="email"
+                  class="form-input"
+                  id="email"
+                  name="email"
+                  placeholder="email@example.com"
+                  required
+                />
+              </div>
+
+              <!-- Mật khẩu -->
+              <div class="form-group">
+                <label class="form-label" for="password">Mật khẩu</label>
+                <input
+                  type="password"
+                  class="form-input"
+                  id="password"
+                  name="password"
+                  placeholder="Ít nhất 6 ký tự"
+                  minlength="6"
+                  required
+                />
+              </div>
+
+              <!-- Xác nhận mật khẩu -->
+              <div class="form-group">
+                <label class="form-label" for="confirmPassword"
+                  >Xác nhận mật khẩu</label
+                >
+                <input
+                  type="password"
+                  class="form-input"
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  placeholder="Nhập lại mật khẩu"
+                  required
+                />
+              </div>
+
+              <!-- Thông báo lỗi -->
+              <div
+                id="errorMessage"
+                class="form-error"
+                style="display: none"
+              ></div>
+
+              <!-- Nút đăng ký -->
+              <button type="submit" class="btn btn-primary btn-lg w-full">
+                Đăng ký
+              </button>
+            </form>
+          </div>
+
+          <div class="auth-footer">
+            <p class="auth-footer-text">
+              Đã có tài khoản?
+              <a href="login.html" class="auth-footer-link">Đăng nhập</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="js/storage.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+      // Xử lý đăng ký
+      function handleRegister(event) {
+        event.preventDefault();
+
+        const form = event.target;
+        const name = form.name.value.trim();
+        const email = form.email.value.trim();
+        const password = form.password.value;
+        const confirmPassword = form.confirmPassword.value;
+        const errorEl = document.getElementById("errorMessage");
+
+        // Kiểm tra mật khẩu khớp
+        if (password !== confirmPassword) {
+          errorEl.textContent = "Mật khẩu xác nhận không khớp.";
+          errorEl.style.display = "block";
+          return;
+        }
+
+        // Gọi hàm đăng ký
+        const result = register(name, email, password);
+
+        if (result.success) {
+          showNotification(result.message, "success");
+          // Chuyển đến trang đăng nhập
+          setTimeout(() => {
+            window.location.href = "login.html";
+          }, 1000);
+        } else {
+          errorEl.textContent = result.message;
+          errorEl.style.display = "block";
+        }
+      }
+
+      // Kiểm tra nếu đã đăng nhập thì chuyển về trang chủ
+      document.addEventListener("DOMContentLoaded", function () {
+        initializeDefaultData();
+        createToastContainer();
+
+        if (isLoggedIn()) {
+          window.location.href = "index.html";
+        }
+      });
+
+      // Tạo container cho toast
+      function createToastContainer() {
+        if (!document.querySelector(".toast-container")) {
+          const container = document.createElement("div");
+          container.className = "toast-container";
+          document.body.appendChild(container);
+        }
+      }
+    </script>
+  </body>
+</html>

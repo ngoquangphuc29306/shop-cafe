@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Panel - Kvone Coffee</title>
+    <meta name="description" content="Quản lý sản phẩm, đơn hàng và thống kê" />
+    <link rel="icon" type="image/png" href="menu/icons/coffee.png" />
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/main.css" />
+    <!-- Admin-specific font override -->
+    <style>
+      /* Override tiêu đề tab admin để dùng font Inter thay vì Playfair Display */
+      .admin-content h2 {
+        font-family: "Inter", sans-serif;
+        font-weight: 600;
+      }
+      /* Modal title trong admin cũng dùng Inter */
+      .admin-content .modal-title,
+      #confirmModalBackdrop h3 {
+        font-family: "Inter", sans-serif;
+        font-weight: 600;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="admin-page">
+      <!-- Admin Header -->
+      <header class="admin-header">
+        <div class="admin-header-container">
+          <div style="display: flex; align-items: center; gap: var(--space-4)">
+            <a href="index.html" style="color: var(--color-secondary)"
+              >← Về trang chủ</a
+            >
+            <h1 class="admin-title">☕ Admin Panel</h1>
+          </div>
+          <div style="display: flex; align-items: center; gap: var(--space-4)">
+            <div
+              class="user-menu"
+              id="userMenu"
+              style="background: rgba(255, 255, 255, 0.1)"
+            >
+              <div
+                class="avatar"
+                style="
+                  background: var(--color-secondary);
+                  color: var(--color-dark);
+                "
+              >
+                A
+              </div>
+              <span class="user-name" style="color: white">Admin</span>
+            </div>
+            <button
+              class="btn btn-ghost"
+              style="color: white"
+              onclick="logout()"
+            >
+              🚪 Đăng xuất
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Admin Content -->
+      <div class="admin-container">
+        <!-- Tabs -->
+        <div class="admin-tabs">
+          <div class="tabs">
+            <button
+              class="tab-btn active"
+              data-tab="products"
+              onclick="switchAdminTab('products')"
+            >
+              📦 Sản phẩm
+            </button>
+            <button
+              class="tab-btn"
+              data-tab="categories"
+              onclick="switchAdminTab('categories')"
+            >
+              📁 Danh mục
+            </button>
+            <button
+              class="tab-btn"
+              data-tab="sizes"
+              onclick="switchAdminTab('sizes')"
+            >
+              📐 Size
+            </button>
+            <button
+              class="tab-btn"
+              data-tab="toppings"
+              onclick="switchAdminTab('toppings')"
+            >
+              🧁 Topping
+            </button>
+            <button
+              class="tab-btn"
+              data-tab="orders"
+              onclick="switchAdminTab('orders')"
+            >
+              📋 Đơn hàng
+            </button>
+            <button
+              class="tab-btn"
+              data-tab="stats"
+              onclick="switchAdminTab('stats')"
+            >
+              📊 Thống kê
+            </button>
+            <button
+              class="tab-btn"
+              data-tab="users"
+              onclick="switchAdminTab('users')"
+            >
+              👥 Tài khoản
+            </button>
+            <button
+              class="tab-btn"
+              data-tab="inventory"
+              onclick="switchAdminTab('inventory')"
+            >
+              📦 Kho
+            </button>
+            <button
+              class="tab-btn"
+              data-tab="employees"
+              onclick="switchAdminTab('employees')"
+            >
+              👤 Nhân viên
+            </button>
+          </div>
+        </div>
+
+        <!-- Tab Content -->
+        <div class="admin-content" id="adminContent">
+          <!-- Nội dung tab sẽ được render bằng JavaScript -->
+        </div>
+      </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="js/storage.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/products.js"></script>
+    <script src="js/sizes.js"></script>
+    <script src="js/toppings.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/favorites.js"></script>
+    <script src="js/orders.js"></script>
+    <script src="js/categories.js"></script>
+    <!-- Inventory System (Phase 1) -->
+    <script src="js/inventory/ingredients.js"></script>
+    <script src="js/inventory/recipes.js"></script>
+
+    <script src="js/inventory/admin-inventory.js"></script>
+    <!-- Employee System (Basic CRUD only) -->
+    <script src="js/employees/employees.js"></script>
+    <script src="js/employees/admin-employees.js"></script>
+    <script src="js/admin.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+      // Khởi tạo trang
+      document.addEventListener("DOMContentLoaded", function () {
+        // Khởi tạo dữ liệu
+        initializeDefaultData();
+
+        // Tạo toast container
+        createToastContainer();
+
+        // Kiểm tra quyền admin
+        if (!isLoggedIn()) {
+          window.location.href =
+            "login.html?return=" + encodeURIComponent(window.location.href);
+          return;
+        }
+
+        if (!isAdmin()) {
+          showNotification("Bạn không có quyền truy cập trang này.", "error");
+          setTimeout(() => {
+            window.location.href = "index.html";
+          }, 1500);
+          return;
+        }
+
+        // Render thông tin admin
+        const user = getCurrentUser();
+        const avatarEl = document.querySelector(".avatar");
+        const nameEl = document.querySelector(".user-name");
+        if (avatarEl) avatarEl.textContent = user.name.charAt(0).toUpperCase();
+        if (nameEl) nameEl.textContent = user.name;
+
+        // Khởi tạo admin panel
+        initAdminPanel();
+      });
+
+      // Tạo container cho toast
+      function createToastContainer() {
+        if (!document.querySelector(".toast-container")) {
+          const container = document.createElement("div");
+          container.className = "toast-container";
+          document.body.appendChild(container);
+        }
+      }
+    </script>
+  </body>
+</html>

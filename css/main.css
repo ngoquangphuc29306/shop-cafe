@@ -1,0 +1,129 @@
+/* ==========================================================================
+   MAIN.CSS - File CSS chính (Entry Point)
+   Website Bán Cà Phê - Kvone Coffee
+   ============================================================================
+
+   ĐÂY LÀ FILE QUAN TRỌNG NHẤT!
+   ---------------------------------------------------------------------------
+   File này là điểm vào duy nhất cho tất cả CSS của website.
+   Chỉ cần link file này trong HTML: <link rel="stylesheet" href="css/main.css">
+   
+   THỨ TỰ IMPORT RẤT QUAN TRỌNG!
+   ---------------------------------------------------------------------------
+   Các file được import theo thứ tự từ trên xuống dưới.
+   CSS được load sau sẽ override (ghi đè) CSS load trước nếu có cùng selector.
+   
+   1. base.css       → CSS nền tảng: CSS Variables, Reset, Typography
+   2. components.css → UI Components: Buttons, Cards, Forms, Modals, Tables
+   3. layout.css     → Page Layouts: Header, Footer, Hero, Grids, Admin
+   4. animations.css → Keyframe Animations: Fade, Slide, Bounce, Spin
+   5. enhancements.css → UI Enhancements: Glassmorphism, 3D Effects, Ripple
+   
+   KIẾN TRÚC CSS
+   ---------------------------------------------------------------------------
+   Website sử dụng kiến trúc CSS modular (chia nhỏ file theo chức năng):
+   
+   ┌─────────────────────────────────────────────────────────────────┐
+   │                        main.css (Entry Point)                   │
+   ├─────────────────────────────────────────────────────────────────┤
+   │  ┌───────────┐  ┌─────────────┐  ┌──────────┐                  │
+   │  │ base.css  │─►│components.css│─►│layout.css│                  │
+   │  │ (Nền tảng)│  │ (Components) │  │ (Layouts)│                  │
+   │  └───────────┘  └─────────────┘  └──────────┘                  │
+   │                       │                │                        │
+   │                       ▼                ▼                        │
+   │              ┌─────────────┐  ┌────────────────┐               │
+   │              │animations.css│  │enhancements.css│               │
+   │              │ (Animations) │  │ (UI Effects)   │               │
+   │              └─────────────┘  └────────────────┘               │
+   └─────────────────────────────────────────────────────────────────┘
+   
+   CSS VARIABLES (Custom Properties)
+   ---------------------------------------------------------------------------
+   Website sử dụng CSS Variables để quản lý màu sắc, font, spacing...
+   Tất cả variables được định nghĩa trong base.css
+   
+   Ví dụ:
+   - --color-primary: #6F4E37  (Màu cà phê chính)
+   - --color-secondary: #F7E1BC (Màu kem phụ)
+   - --font-display: "Playfair Display" (Font cho tiêu đề)
+   - --space-4: 1rem (Khoảng cách cơ bản)
+   
+   RESPONSIVE DESIGN
+   ---------------------------------------------------------------------------
+   Website sử dụng Mobile-First approach với các breakpoints:
+   - Mobile: < 480px
+   - Tablet: 480px - 768px
+   - Desktop: > 768px
+   - Large Desktop: > 1200px
+   
+   ========================================================================== */
+
+/* ---------------------------------------------------------------------------
+   GOOGLE FONTS
+   ---------------------------------------------------------------------------
+   Import fonts từ Google Fonts để sử dụng trong website.
+   
+   Fonts được sử dụng:
+   1. Nunito: Font chính cho body text (đọc dễ, thân thiện)
+      - Weights: 400 (normal), 500 (medium), 600 (semibold), 700 (bold)
+   
+   2. Playfair Display: Font cho headings (sang trọng, elegant)
+      - Weight: 700 (bold)
+   
+   &subset=vietnamese: Bao gồm ký tự tiếng Việt (có dấu)
+   &display=swap: Hiển thị text ngay bằng system font, swap khi font load xong
+   --------------------------------------------------------------------------- */
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap&subset=vietnamese");
+
+/* ---------------------------------------------------------------------------
+   IMPORT CÁC FILE CSS
+   ---------------------------------------------------------------------------
+   Mỗi file chứa một phần cụ thể của CSS.
+   Xem comment ở đầu mỗi file để hiểu chi tiết.
+   --------------------------------------------------------------------------- */
+
+/* 1️⃣ BASE.CSS - Nền tảng CSS
+   - CSS Variables (màu sắc, font, spacing, shadows...)
+   - CSS Reset (normalize styles across browsers)
+   - Typography (h1-h6, p, a, lists...)
+   - Utility classes (text-center, flex, grid...)
+   */
+@import url("base.css");
+
+/* 2️⃣ COMPONENTS.CSS - UI Components (60% của CSS)
+   - Buttons (.btn, .btn-primary, .btn-secondary...)
+   - Cards (.card, .product-card...)
+   - Forms (.form-group, .form-input, .form-label...)
+   - Modals (.modal, .modal-content...)
+   - Tables (.admin-table...)
+   - Badges, Alerts, Tooltips...
+   */
+@import url("components.css");
+
+/* 3️⃣ LAYOUT.CSS - Page Layouts
+   - Header & Navigation (.header, .nav, .mobile-menu-btn...)
+   - Footer (.footer, .footer-links...)
+   - Hero Section (.hero, .hero-content...)
+   - Grids (.container, .product-grid, .stats-grid...)
+   - Admin Layout (.admin-page, .admin-tabs...)
+   - Auth Pages (.auth-page, .auth-card...)
+   */
+@import url("layout.css");
+
+/* 4️⃣ ANIMATIONS.CSS - Keyframe Animations
+   - Page transitions (pageSlideUp, fadeIn, zoomIn)
+   - Component animations (bounce, pulse, spin, shake)
+   - Toast animations (slideInUp, slideOutDown)
+   - Utility classes (.animate-bounce, .animate-spin...)
+   */
+@import url("animations.css");
+
+/* 5️⃣ ENHANCEMENTS.CSS - Premium UI Effects
+   - Glassmorphism (.glass, .glass-card)
+   - 3D Card Tilt (.card-3d)
+   - Ripple Effect (.ripple)
+   - Performance CSS (GPU acceleration, will-change)
+   - Responsive mobile optimizations
+   */
+@import url("enhancements.css");

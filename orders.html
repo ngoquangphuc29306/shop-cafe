@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<!--
+================================================================================
+ORDERS.HTML - Trang Lịch sử Đơn hàng
+================================================================================
+
+Chức năng:
+- Hiển thị danh sách đơn hàng của user đã đăng nhập
+- Mỗi đơn hàng có thể mở rộng (click) để xem chi tiết
+- Hiển thị trạng thái đơn hàng (màu sắc badge)
+- Yêu cầu đăng nhập để xem
+
+Order Card Structure:
+- Header: Mã đơn, ngày tạo, trạng thái, tổng tiền
+- Body (ẩn mặc định): Chi tiết sản phẩm, thông tin giao hàng
+
+Các element quan trọng (ID):
+- orderList: Container hiển thị danh sách đơn hàng
+================================================================================
+-->
+<html lang="vi">
+  <head>
+    <!-- ===== META TAGS ===== -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Đơn hàng của tôi - Kvone Coffee</title>
+    <meta name="description" content="Xem lịch sử đơn hàng của bạn" />
+    <link rel="icon" type="image/png" href="menu/icons/coffee.png" />
+
+    <!-- View Transitions API -->
+    <meta name="view-transition" content="same-origin" />
+    <meta name="theme-color" content="#54372b" />
+
+    <!-- ===== CSS ===== -->
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/main.css" />
+  </head>
+
+  <body>
+    <div class="page-wrapper">
+      <!-- 
+        =====================================================================
+        HEADER - Navigation chính
+        Link "Đơn hàng" được highlight (active)
+        =====================================================================
+        -->
+      <header class="header">
+        <div class="header-container">
+          <a href="index.html" class="logo">
+            <span class="logo-icon">☕</span>
+            <span>Kvone Coffee</span>
+          </a>
+
+          <nav class="nav" id="mainNav">
+            <a href="index.html" class="nav-link">Menu</a>
+            <a href="favorites.html" class="nav-link">Yêu thích</a>
+            <!-- Active: Trang hiện tại -->
+            <a href="orders.html" class="nav-link active">Đơn hàng</a>
+          </nav>
+
+          <div class="header-actions">
+            <a href="cart.html" class="cart-btn">
+              🛒
+              <span class="cart-badge" style="display: none">0</span>
+            </a>
+
+            <div
+              class="user-menu"
+              id="userMenu"
+              style="display: none"
+              onclick="toggleUserDropdown()"
+            >
+              <div class="avatar">U</div>
+              <span class="user-name">User</span>
+            </div>
+
+            <div id="authLinks" style="display: flex; gap: var(--space-2)">
+              <a href="login.html" class="btn btn-ghost btn-sm">Đăng nhập</a>
+              <a href="register.html" class="btn btn-secondary btn-sm"
+                >Đăng ký</a
+              >
+            </div>
+
+            <button class="mobile-menu-btn btn btn-ghost" id="mobileMenuBtn" onclick="document.querySelector('.nav').classList.toggle('active')">
+              ☰
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- 
+        =====================================================================
+        MAIN CONTENT
+        =====================================================================
+        -->
+      <main class="main-content">
+        <div
+          class="container"
+          style="padding: var(--space-8) var(--container-padding)"
+        >
+          <!-- Page Title -->
+          <h1 style="margin-bottom: var(--space-6)">📋 Đơn hàng của tôi</h1>
+
+          <!-- 
+                ORDER LIST Container
+                Nội dung được render bằng JavaScript
+                - Nếu chưa đăng nhập: Hiển thị yêu cầu login
+                - Nếu đã đăng nhập: Hiển thị danh sách đơn hàng
+                - Nếu không có đơn: Hiển thị empty state
+                -->
+          <div class="order-list" id="orderList">
+            <!-- Render bằng JavaScript trong renderUserOrders() -->
+          </div>
+        </div>
+      </main>
+
+      <!-- 
+        =====================================================================
+        FOOTER
+        =====================================================================
+        -->
+      <footer class="footer">
+        <div class="footer-container">
+          <div class="footer-brand">
+            <div class="footer-logo">
+              <span>☕</span>
+              <span>Kvone Coffee</span>
+            </div>
+            <p class="footer-desc">
+              Nơi mỗi ly cà phê là một tác phẩm nghệ thuật, được pha chế với
+              tình yêu và sự tận tâm.
+            </p>
+          </div>
+
+          <div>
+            <h4 class="footer-title">Liên kết</h4>
+            <div class="footer-links">
+              <a href="index.html" class="footer-link">☕ Menu</a>
+              <a href="favorites.html" class="footer-link">💕 Yêu thích</a>
+              <a href="orders.html" class="footer-link">📋 Đơn hàng</a>
+            </div>
+          </div>
+
+          <div>
+            <h4 class="footer-title">Liên hệ</h4>
+            <div class="footer-links">
+              <span class="footer-link">📍 Nguyễn Văn Linh, Đà Nẵng</span>
+              <span class="footer-link">📞 0905580275</span>
+              <span class="footer-link">✉️ kvonecoffee@gmail.com</span>
+              <span class="footer-link">⏰ 7:00 - 22:00 hàng ngày</span>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          © 2024 Kvone Coffee. Made with ❤️ for coffee lovers.
+        </div>
+      </footer>
+    </div>
+
+    <!-- 
+    =========================================================================
+    USER DROPDOWN MENU
+    =========================================================================
+    -->
+    <div
+      id="userDropdown"
+      class="card"
+      style="
+        display: none;
+        position: fixed;
+        top: 70px;
+        right: 100px;
+        min-width: 220px;
+        z-index: 1000;
+        box-shadow: var(--shadow-2xl);
+      "
+    >
+      <div class="card-body" style="padding: var(--space-2)">
+        <a
+          href="orders.html"
+          class="btn btn-ghost w-full"
+          style="justify-content: flex-start; gap: var(--space-3)"
+          >📋 Đơn hàng của tôi</a
+        >
+        <a
+          href="favorites.html"
+          class="btn btn-ghost w-full"
+          style="justify-content: flex-start; gap: var(--space-3)"
+          >❤️ Yêu thích</a
+        >
+        <a
+          href="admin.html"
+          id="adminLink"
+          class="btn btn-ghost w-full"
+          style="
+            display: none;
+            justify-content: flex-start;
+            gap: var(--space-3);
+            color: var(--color-primary);
+          "
+        >
+          ⚙️ Quản lý Admin
+        </a>
+        <div class="divider" style="margin: var(--space-2) 0"></div>
+        <button
+          class="btn btn-ghost w-full"
+          style="
+            justify-content: flex-start;
+            gap: var(--space-3);
+            color: var(--color-error);
+          "
+          onclick="logout()"
+        >
+          🚪 Đăng xuất
+        </button>
+      </div>
+    </div>
+
+    <!-- 
+    =========================================================================
+    JAVASCRIPT FILES
+    Lưu ý: Cần load orders.js cho trang này
+    =========================================================================
+    -->
+    <script src="js/storage.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/products.js"></script>
+    <script src="js/sizes.js"></script>
+    <script src="js/toppings.js"></script>
+    <script src="js/cart.js"></script>
+    <script src="js/favorites.js"></script>
+    <script src="js/orders.js"></script>
+    <!-- Orders management -->
+    <script src="js/app.js"></script>
+    <script src="js/enhancements.js"></script>
+
+    <!-- 
+    =========================================================================
+    INLINE JAVASCRIPT
+    =========================================================================
+    -->
+    <script>
+      // =====================================================================
+      // TOGGLE USER DROPDOWN
+      // =====================================================================
+      function toggleUserDropdown() {
+        const dropdown = document.getElementById("userDropdown");
+        dropdown.style.display =
+          dropdown.style.display === "none" ? "block" : "none";
+      }
+
+      // =====================================================================
+      // CLICK OUTSIDE TO CLOSE DROPDOWN
+      // =====================================================================
+      document.addEventListener("click", function (e) {
+        const userMenu = document.getElementById("userMenu");
+        const dropdown = document.getElementById("userDropdown");
+
+        if (!userMenu?.contains(e.target) && !dropdown?.contains(e.target)) {
+          if (dropdown) dropdown.style.display = "none";
+        }
+      });
+
+      // =====================================================================
+      // DOM CONTENT LOADED
+      // =====================================================================
+      document.addEventListener("DOMContentLoaded", function () {
+        // Khởi tạo app
+        initApp();
+
+        // Hiển thị Admin link nếu là admin
+        if (isAdmin()) {
+          const adminLink = document.getElementById("adminLink");
+          if (adminLink) adminLink.style.display = "flex";
+        }
+
+        // ===== KIỂM TRA ĐĂNG NHẬP =====
+        // Trang này yêu cầu đăng nhập để xem đơn hàng
+        if (!isLoggedIn()) {
+          // Hiển thị yêu cầu đăng nhập
+          document.getElementById("orderList").innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🔐</div>
+                        <h3 class="empty-state-title">Vui lòng đăng nhập</h3>
+                        <p class="empty-state-text">Đăng nhập để xem lịch sử đơn hàng của bạn.</p>
+                        <!-- 
+                        Link login với return URL
+                        Sau khi đăng nhập sẽ quay lại trang này
+                        encodeURIComponent() mã hóa URL để truyền qua query string
+                        -->
+                        <a href="login.html?return=${encodeURIComponent(
+                          window.location.href
+                        )}" class="btn btn-primary">Đăng nhập</a>
+                    </div>
+                `;
+          return;
+        }
+
+        // ===== RENDER DANH SÁCH ĐƠN HÀNG =====
+        // Gọi hàm từ orders.js
+        // Hàm này tự xử lý trường hợp không có đơn hàng
+        renderUserOrders(document.getElementById("orderList"));
+      });
+    </script>
+
+    <!-- 
+    =========================================================================
+    INLINE CSS - Styles cho order card accordion
+    =========================================================================
+    -->
+    <style>
+      /* 
+        ORDER CARD ACCORDION EFFECT
+        Mỗi order card có 2 phần: header và body
+        Body được ẩn mặc định, hiện khi card có class 'expanded'
+        */
+
+      /* Body ẩn mặc định */
+      .order-card .order-body {
+        display: none;
+      }
+
+      /* Khi card được mở rộng, hiện body */
+      .order-card.expanded .order-body {
+        display: block;
+      }
+
+      /* Xoay mũi tên khi mở rộng */
+      .order-card.expanded .order-header span:last-child {
+        transform: rotate(180deg);
+      }
+    </style>
+  </body>
+</html>

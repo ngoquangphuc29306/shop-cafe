@@ -1,0 +1,188 @@
+/* ==========================================================================
+   ANIMATIONS.CSS - Các Keyframe Animations Toàn Cục
+   Website Bán Cà Phê - Kvone Coffee
+   ============================================================================
+   
+   FILE NÀY CHỨA GÌ?
+   ---------------------------------------------------------------------------
+   Tất cả @keyframes animations dùng chung trong website:
+   - Page transitions: Hiệu ứng khi load trang
+   - Component animations: Hiệu ứng cho UI components
+   
+   CÁCH SỬ DỤNG KEYFRAME
+   ---------------------------------------------------------------------------
+   @keyframes định nghĩa các bước của animation.
+   Sau đó dùng trong CSS với thuộc tính animation:
+   
+   Ví dụ:
+   .element {
+     animation: fadeIn 0.5s ease-out;
+   }
+   
+   Cú pháp: animation: [tên] [thời gian] [timing-function] [delay] [lặp lại];
+   
+   TIMING FUNCTIONS PHỔ BIẾN
+   ---------------------------------------------------------------------------
+   - ease: Bắt đầu chậm, nhanh dần, rồi chậm lại (mặc định)
+   - ease-in: Bắt đầu chậm, nhanh dần
+   - ease-out: Bắt đầu nhanh, chậm dần (tự nhiên nhất)
+   - ease-in-out: Chậm → nhanh → chậm
+   - linear: Tốc độ đều
+   
+   ========================================================================== */
+
+/* ----------------------------------------------------------------------------
+   HIỆU ỨNG CHUYỂN TRANG (PAGE TRANSITIONS)
+   ----------------------------------------------------------------------------
+   Dùng cho: main content khi trang load xong
+   Tạo cảm giác trang "trượt vào" thay vì xuất hiện đột ngột
+   ---------------------------------------------------------------------------- */
+
+/**
+ * pageSlideUp - Trượt từ dưới lên + Fade in
+ * 
+ * Bắt đầu: opacity 0 (trong suốt), dịch xuống 15px
+ * Kết thúc: opacity 1 (hiện đầy đủ), vị trí gốc
+ * 
+ * Dùng cho: Main content, cards, sections
+ */
+@keyframes pageSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/**
+ * fadeIn - Chỉ Fade in đơn giản
+ * 
+ * Bắt đầu: Trong suốt
+ * Kết thúc: Hiện đầy đủ
+ * 
+ * Dùng cho: Modals, overlays, elements đơn giản
+ */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/**
+ * zoomIn - Zoom từ nhỏ ra lớn + Fade
+ * 
+ * Bắt đầu: Trong suốt, thu nhỏ 95%
+ * Kết thúc: Hiện đầy đủ, kích thước gốc
+ * 
+ * Dùng cho: Modal dialogs, popups
+ */
+@keyframes zoomIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* ----------------------------------------------------------------------------
+   HIỆU ỨNG COMPONENTS (COMPONENT ANIMATIONS)
+   ----------------------------------------------------------------------------
+   Dùng cho: Buttons, badges, loading states
+   Tạo micro-interactions làm UI sống động hơn
+   ---------------------------------------------------------------------------- */
+
+/**
+ * bounce - Nhảy lên xuống
+ * 
+ * 0%: Vị trí gốc
+ * 50%: Nhảy lên 8px
+ * 100%: Về vị trí gốc
+ * 
+ * Dùng cho: Icon khi hover, badges khi update
+ */
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+/**
+ * pulse - Nhấp nháy opacity
+ * 
+ * 0%: Sáng đầy đủ
+ * 50%: Mờ 50%
+ * 100%: Sáng lại
+ * 
+ * Dùng cho: Loading indicators, notifications chưa đọc
+ */
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/**
+ * spin - Xoay 360 độ liên tục
+ * 
+ * Dùng cho: Loading spinners, refresh icons
+ */
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/**
+ * shake - Rung lắc trái phải
+ * 
+ * Tạo hiệu ứng "lắc đầu" từ chối
+ * 
+ * Dùng cho: Form validation errors, wrong password
+ */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
+    20%, 40%, 60%, 80% { transform: translateX(4px); }
+}
+
+/* ----------------------------------------------------------------------------
+   TOAST ANIMATIONS - Hiệu ứng cho thông báo
+   ----------------------------------------------------------------------------
+   Toast notifications trượt vào từ dưới và trượt ra khi đóng
+   ---------------------------------------------------------------------------- */
+
+/**
+ * slideInUp - Trượt vào từ dưới (Toast xuất hiện)
+ * 
+ * Bắt đầu: Ngoài màn hình (100px dưới)
+ * Kết thúc: Vị trí hiển thị
+ */
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(100px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/**
+ * slideOutDown - Trượt ra xuống dưới (Toast đóng)
+ * 
+ * Bắt đầu: Vị trí hiển thị
+ * Kết thúc: Ra ngoài màn hình
+ */
+@keyframes slideOutDown {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(100px);
+    }
+}
